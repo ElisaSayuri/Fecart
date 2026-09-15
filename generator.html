@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de QR Code - "Você foi hackeado!"</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #121824;
+      --matrix-green: #00ff66;
+      --alert-red: #ff2244;
+      --alert-yellow: #ffb700;
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --border: #30363d;
+      --font-mono: 'Share Tech Mono', 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 680px;
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--matrix-green);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 0 25px rgba(0, 255, 102, 0.15);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+
+    h1 {
+      color: var(--matrix-green);
+      font-size: clamp(22px, 5vw, 28px);
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--matrix-green);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px 14px;
+      background: #06090f;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus, select:focus {
+      border-color: var(--matrix-green);
+      box-shadow: 0 0 8px rgba(0, 255, 102, 0.25);
+    }
+
+    .quick-btn {
+      background: #21262d;
+      border: 1px solid var(--border);
+      color: #c9d1d9;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 6px;
+      margin-right: 6px;
+      transition: all 0.2s;
+    }
+
+    .quick-btn:hover {
+      background: var(--border);
+      color: #fff;
+    }
+
+    .preview-section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    #qrcode-container {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-bottom: 18px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+      min-width: 232px;
+      min-height: 232px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--matrix-green);
+      color: #000;
+      box-shadow: 0 0 12px rgba(0, 255, 102, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: #33ff88;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #21262d;
+      color: #fff;
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #30363d;
+    }
+
+    .btn-danger {
+      background: var(--alert-red);
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #ff4466;
+    }
+
+    .info-callout {
+      margin-top: 24px;
+      background: rgba(255, 183, 0, 0.08);
+      border-left: 4px solid var(--alert-yellow);
+      padding: 14px;
+      border-radius: 4px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #c9d1d9;
+    }
+
+    .info-callout strong {
+      color: var(--alert-yellow);
+    }
+
+    .copied-toast {
+      position: fixed;
+      bottom: 20px;
+      background: var(--matrix-green);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 700;
+      box-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .copied-toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚡ GERADOR DE QR CODE</h1>
+      <p class="subtitle">Personalize a URL e gere a imagem pronta para imprimir ou compartilhar</p>
+    </header>
+
+    <div class="form-group">
+      <label for="url-input">🔗 URL de Destino (onde o QR Code vai levar):</label>
+      <input type="text" id="url-input" placeholder="Ex: http://192.168.1.15:8080 ou https://meu-site.github.io">
+      <div>
+        <button class="quick-btn" id="btn-use-origin">Usar URL desta aplicação (index.html)</button>
+        <button class="quick-btn" id="btn-use-localip">Detectar IP Local</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="qr-size">📐 Tamanho do QR Code:</label>
+      <select id="qr-size">
+        <option value="200">Pequeno (200 x 200 px)</option>
+        <option value="300" selected>Médio (300 x 300 px) - Recomendado</option>
+        <option value="500">Grande (500 x 500 px) - Ideal para impressão</option>
+      </select>
+    </div>
+
+    <div class="preview-section">
+      <label style="margin-bottom: 14px;">PRÉVIA DO QR CODE (Aponte a câmera do celular para testar):</label>
+      <div id="qrcode-container"></div>
+
+      <div class="btn-group">
+        <button id="btn-download" class="btn btn-primary">📥 Baixar Imagem (PNG)</button>
+        <button id="btn-copy" class="btn btn-secondary">📋 Copiar Link</button>
+        <a id="btn-test" href="index.html" target="_blank" class="btn btn-danger">👁️ Abrir Tela Hacker</a>
+      </div>
+    </div>
+
+    <div class="info-callout">
+      <strong>💡 Dica de Utilização:</strong>
+      <br>• <strong>Para testar no celular via Wi-Fi:</strong> Certifique-se de que o computador e o celular estão no mesmo Wi-Fi e use o IP local da sua máquina (ex: <code>http://192.168.x.x:8080</code> ou <code>http://10.x.x.x:8080</code>).
+      <br>• <strong>Para enviar pela internet ou colar em qualquer lugar:</strong> Suba esses arquivos no GitHub Pages, Vercel ou Netlify e cole a URL pública gerada aqui!
+    </div>
+  </div>
+
+  <div id="toast" class="copied-toast">Link copiado com sucesso!</div>
+
+  <script src="qrcode.min.js"></script>
+  <script>
+    const urlInput = document.getElementById('url-input');
+    const qrSizeSelect = document.getElementById('qr-size');
+    const qrContainer = document.getElementById('qrcode-container');
+    const btnDownload = document.getElementById('btn-download');
+    const btnCopy = document.getElementById('btn-copy');
+    const btnUseOrigin = document.getElementById('btn-use-origin');
+    const btnUseLocalIp = document.getElementById('btn-use-localip');
+    const toast = document.getElementById('toast');
+
+    let qrCodeInstance = null;
+
+    // Detectar URL padrão
+    function getInitialUrl() {
+      const currentUrl = window.location.href;
+      if (currentUrl.includes('generator.html')) {
+        return currentUrl.replace('generator.html', 'index.html');
+      }
+      return window.location.origin + '/index.html';
+    }
+
+    function renderQR() {
+      let targetUrl = urlInput.value.trim();
+      if (!targetUrl) {
+        targetUrl = getInitialUrl();
+        urlInput.value = targetUrl;
+      }
+
+      const size = parseInt(qrSizeSelect.value, 10) || 300;
+
+      qrContainer.innerHTML = '';
+      qrCodeInstance = new QRCode(qrContainer, {
+        text: targetUrl,
+        width: size,
+        height: size,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    urlInput.value = getInitialUrl();
+    renderQR();
+
+    urlInput.addEventListener('input', renderQR);
+    qrSizeSelect.addEventListener('change', renderQR);
+
+    btnUseOrigin.addEventListener('click', () => {
+      urlInput.value = getInitialUrl();
+      renderQR();
+    });
+
+    btnUseLocalIp.addEventListener('click', () => {
+      // Se estiver rodando via server.py, o script Python expõe o IP no console
+      const currentPort = window.location.port || '8080';
+      const promptIp = prompt("Digite ou confirme o seu IP local (ex: 192.168.1.15 ou 10.1.33.166):", window.location.hostname !== 'localhost' ? window.location.hostname : '192.168.1.100');
+      if (promptIp) {
+        urlInput.value = `http://${promptIp}:${currentPort}/index.html`;
+        renderQR();
+      }
+    });
+
+    // Download do QR Code em PNG
+    btnDownload.addEventListener('click', () => {
+      const img = qrContainer.querySelector('img');
+      const canvas = qrContainer.querySelector('canvas');
+
+      let downloadUrl = '';
+      if (img && img.src) {
+        downloadUrl = img.src;
+      } else if (canvas) {
+        downloadUrl = canvas.toDataURL('image/png');
+      }
+
+      if (downloadUrl) {
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = 'qrcode-voce-foi-hackeado.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        alert('Aguarde o QR Code carregar completamente para baixar.');
+      }
+    });
+
+    // Copiar link para área de transferência
+    btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(urlInput.value.trim()).then(() => {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    });
+  </script>
+</body>
+</html>

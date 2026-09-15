@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ALERTA CRÍTICO DE SEGURANÇA - SISTEMA COMPROMETIDO</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body class="crt">
+  <!-- Fundo com Matrix Rain -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Efeito de Scanlines CRT -->
+  <div class="scanline"></div>
+
+  <!-- Botão de controle de áudio -->
+  <button id="sound-toggle" class="sound-btn" title="Ativar/Desativar Som">
+    <span id="sound-icon">🔇</span>
+    <span id="sound-label">SOM</span>
+  </button>
+
+  <!-- Conteúdo Principal do Alerta Hacker -->
+  <main id="hacker-screen" class="main-container">
+    <!-- Cabeçalho de Emergência -->
+    <header class="alert-header">
+      <div class="warning-badge animate-blink">⚠️ ALERTA DE SEGURANÇA CRÍTICO ⚠️</div>
+      <h1 class="glitch-text" data-text="VOCÊ FOI HACKEADO!">VOCÊ FOI HACKEADO!</h1>
+      <p class="subtitle">EXECUÇÃO DE PAYLOAD NÃO AUTORIZADO VIA QR CODE</p>
+    </header>
+
+    <!-- Cartão de Identificação da Vítima -->
+    <section class="device-card">
+      <div class="card-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="card-title">DISPOSITIVO VÍTIMA IDENTIFICADO</span>
+      </div>
+      <div class="device-info-grid">
+        <div class="info-item">
+          <span class="label">Dispositivo:</span>
+          <span id="dev-model" class="value highlight">Detectando...</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Sistema:</span>
+          <span id="dev-os" class="value">Identificando...</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Endereço IP:</span>
+          <span id="dev-ip" class="value alert-color">Rastreando...</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Localização:</span>
+          <span id="dev-loc" class="value">Triangulando...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terminal de Logs Falsos -->
+    <section class="terminal-window">
+      <div class="terminal-bar">
+        <span class="terminal-title">bash - root@c2-server: payload_qr.sh</span>
+        <span class="live-indicator"><span class="pulse-dot"></span> AO VIVO</span>
+      </div>
+      <div id="terminal-body" class="terminal-content">
+        <!-- Linhas injetadas via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Barra de Progresso Fictícia de Roubo de Arquivos -->
+    <section class="progress-section">
+      <div class="progress-labels">
+        <span id="progress-status">Extraindo fotos e conversas...</span>
+        <span id="progress-percent">0%</span>
+      </div>
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar-fill"></div>
+      </div>
+    </section>
+
+    <!-- Temporizador de Pânico e Ação -->
+    <section class="action-section">
+      <div class="countdown-box">
+        <span class="countdown-label">BLOQUEIO DEFINITIVO DO APARELHO EM:</span>
+        <div id="countdown" class="countdown-timer">00:15</div>
+      </div>
+
+      <button id="panic-btn" class="panic-button">
+        <span class="btn-icon">⚡</span> TENTAR INTERROMPER INVASÃO <span class="btn-icon">⚡</span>
+      </button>
+      <p class="panic-hint">Toque na tela para tentar conexão de emergência</p>
+    </section>
+  </main>
+
+  <!-- Modal de Revelação da Pegadinha / Conscientização -->
+  <div id="reveal-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="confetti-emoji">🎉 📱 😂</div>
+      <h2 class="reveal-title">RELAXA! É UMA BRINCADEIRA!</h2>
+      <p class="reveal-badge">Nenhum dado seu foi acessado ou copiado.</p>
+
+      <div class="awareness-box">
+        <h3>🛡️ Fique Atento: Isso é um Alerta Real!</h3>
+        <p>
+          O que você acabou de ver é uma simulação de um golpe conhecido como <strong>Quishing</strong> (QR Code Phishing).
+        </p>
+        <ul class="tips-list">
+          <li><strong>O que é:</strong> Criminosos colam adesivos falsos de QR Code em locais públicos (restaurantes, totens, estacionamentos, cartazes) para direcionar vítimas a páginas maliciosas.</li>
+          <li><strong>Dica de ouro:</strong> Sempre verifique a URL exibida pela câmera antes de abrir qualquer link de QR Code.</li>
+          <li><strong>Nunca</strong> digite senhas, dados de cartão ou instale aplicativos desconhecidos abertos através de QR Code.</li>
+        </ul>
+      </div>
+
+      <div class="modal-actions">
+        <button id="restart-btn" class="btn btn-secondary">🔄 Repetir Brincadeira</button>
+        <a href="generator.html" class="btn btn-primary">✨ Criar Meu Próprio QR Code</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

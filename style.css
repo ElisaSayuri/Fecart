@@ -1,0 +1,560 @@
+/* ============================================================
+   ESTILOS GERAIS & PALETA CYBERPUNK / HACKER
+   ============================================================ */
+:root {
+  --bg-dark: #07090e;
+  --bg-card: rgba(13, 17, 23, 0.92);
+  --bg-terminal: rgba(5, 8, 12, 0.95);
+  --border-color: #00ff6633;
+  --text-primary: #e6edf3;
+  --matrix-green: #00ff66;
+  --alert-red: #ff2244;
+  --alert-red-glow: rgba(255, 34, 68, 0.45);
+  --alert-yellow: #ffb700;
+  --cyan-accent: #00f0ff;
+  --font-mono: 'Share Tech Mono', 'Fira Code', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ============================================================
+   CANVAS MATRIX & EFEITOS CRT
+   ============================================================ */
+#matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+/* Linhas de varredura CRT */
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 4px, 6px 100%;
+}
+
+/* ============================================================
+   BOTÃO DE CONTROLE DE SOM
+   ============================================================ */
+.sound-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--matrix-green);
+  color: var(--matrix-green);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+  transition: all 0.2s ease;
+}
+
+.sound-btn:hover {
+  background: var(--matrix-green);
+  color: #000;
+}
+
+/* ============================================================
+   CONTAINER PRINCIPAL
+   ============================================================ */
+.main-container {
+  position: relative;
+  z-index: 5;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Cabeçalho de Alerta */
+.alert-header {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.warning-badge {
+  display: inline-block;
+  background-color: var(--alert-red);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2px;
+  padding: 5px 14px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  box-shadow: 0 0 15px var(--alert-red-glow);
+}
+
+.animate-blink {
+  animation: blinkFast 0.9s infinite;
+}
+
+@keyframes blinkFast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* Efeito Glitch no título */
+.glitch-text {
+  font-size: clamp(26px, 7vw, 42px);
+  font-weight: 900;
+  color: var(--alert-red);
+  text-shadow: 0 0 12px var(--alert-red-glow), 2px 2px 0px #00f0ff;
+  letter-spacing: 1px;
+  position: relative;
+  margin-bottom: 6px;
+  animation: glitch-anim 2.5s infinite;
+}
+
+@keyframes glitch-anim {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-3px, 1px) skewX(2deg); }
+  94% { transform: translate(3px, -2px) skewX(-2deg); }
+  96% { transform: translate(-2px, 2px); }
+  98% { transform: translate(2px, -1px); }
+}
+
+.subtitle {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--alert-yellow);
+  text-shadow: 0 0 8px rgba(255, 183, 0, 0.4);
+}
+
+/* ============================================================
+   CARTÃO DO DISPOSITIVO VÍTIMA
+   ============================================================ */
+.device-card {
+  background: var(--bg-card);
+  border: 1px solid var(--alert-red);
+  border-radius: 8px;
+  box-shadow: 0 0 16px var(--alert-red-glow);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.card-header {
+  background: rgba(255, 34, 68, 0.15);
+  border-bottom: 1px solid rgba(255, 34, 68, 0.3);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.card-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--alert-red);
+  margin-left: 8px;
+}
+
+.device-info-grid {
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  .device-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item .label {
+  font-size: 11px;
+  color: #8b949e;
+  text-transform: uppercase;
+}
+
+.info-item .value {
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.value.highlight {
+  color: var(--cyan-accent);
+}
+
+.value.alert-color {
+  color: var(--alert-red);
+  font-weight: 700;
+}
+
+/* ============================================================
+   JANELA DO TERMINAL HACKER
+   ============================================================ */
+.terminal-window {
+  background: var(--bg-terminal);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
+  overflow: hidden;
+}
+
+.terminal-bar {
+  background: #11161d;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 255, 102, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--alert-red);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  background-color: var(--alert-red);
+  border-radius: 50%;
+  animation: blinkFast 0.8s infinite;
+}
+
+.terminal-content {
+  padding: 12px 14px;
+  height: 180px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--matrix-green);
+  scroll-behavior: smooth;
+}
+
+.terminal-content::-webkit-scrollbar {
+  width: 5px;
+}
+.terminal-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.log-line {
+  display: flex;
+  gap: 6px;
+  opacity: 0.95;
+}
+.log-line.warn { color: var(--alert-yellow); }
+.log-line.danger { color: var(--alert-red); font-weight: 700; }
+.log-line.cyan { color: var(--cyan-accent); }
+
+/* ============================================================
+   BARRA DE PROGRESSO DE ROUBO
+   ============================================================ */
+.progress-section {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 14px;
+  border-radius: 8px;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: var(--alert-yellow);
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 16px;
+  background: #161b22;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 34, 68, 0.3);
+}
+
+.progress-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--alert-yellow),
+    var(--alert-red),
+    var(--alert-red)
+  );
+  box-shadow: 0 0 10px var(--alert-red-glow);
+  transition: width 0.3s ease;
+}
+
+/* ============================================================
+   SEÇÃO DE AÇÃO & PÂNICO
+   ============================================================ */
+.action-section {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.countdown-box {
+  background: rgba(255, 34, 68, 0.12);
+  border: 1px dashed var(--alert-red);
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.countdown-label {
+  font-size: 12px;
+  color: #ff8899;
+  letter-spacing: 1px;
+}
+
+.countdown-timer {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--alert-red);
+  text-shadow: 0 0 12px var(--alert-red-glow);
+  margin-top: 4px;
+}
+
+.panic-button {
+  width: 100%;
+  background: linear-gradient(180deg, #ff3355, #cc0022);
+  color: #fff;
+  border: none;
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--alert-red-glow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+  animation: pulseButton 1.2s infinite alternate;
+}
+
+@keyframes pulseButton {
+  0% { transform: scale(0.99); box-shadow: 0 0 12px var(--alert-red-glow); }
+  100% { transform: scale(1.02); box-shadow: 0 0 24px rgba(255, 34, 68, 0.8); }
+}
+
+.panic-button:active {
+  transform: scale(0.97);
+}
+
+.panic-hint {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+/* ============================================================
+   MODAL DE REVELAÇÃO (PEGADINHA & CONSCIENTIZAÇÃO)
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 7, 12, 0.94);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.modal-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.modal-card {
+  background: #111822;
+  border: 2px solid var(--matrix-green);
+  border-radius: 12px;
+  max-width: 520px;
+  width: 100%;
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: 0 0 35px rgba(0, 255, 102, 0.35);
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.confetti-emoji {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.reveal-title {
+  color: var(--matrix-green);
+  font-size: clamp(22px, 5vw, 28px);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.reveal-badge {
+  color: #8b949e;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.awareness-box {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 183, 0, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.awareness-box h3 {
+  color: var(--alert-yellow);
+  font-size: 15px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.awareness-box p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #c9d1d9;
+  margin-bottom: 10px;
+}
+
+.tips-list {
+  padding-left: 20px;
+  font-size: 12px;
+  color: #c9d1d9;
+  line-height: 1.6;
+}
+
+.tips-list li {
+  margin-bottom: 6px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+
+@media (min-width: 440px) {
+  .modal-actions {
+    flex-direction: row;
+  }
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: var(--matrix-green);
+  color: #000;
+  border: none;
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
+}
+
+.btn-primary:hover {
+  background: #33ff88;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+}
+
+.btn-secondary:hover {
+  background: #21262d;
+  color: #fff;
+}
