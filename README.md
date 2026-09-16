@@ -62,7 +62,7 @@ Como o projeto é composto por arquivos estáticos (**HTML**, **CSS**, **JavaScr
 1. **Tela de Entrada ("Wi-Fi Grátis"):**
    - Simula um portal cautivo/tela de login para conexão Wi-Fi aberta no evento.
    - O usuário precisa digitar a senha da rede.
-   - **Senhas Aceitas por padrão:** `fecart`, `fecart2024`, `fecart2025`, `fecart2026`, `ciberseguranca`, `12345678`, `wifi123` *(editável no início do arquivo `script.js`)*.
+   - **Senha Configurada:** `F*@c#19_-F8..` *(editável no início do arquivo `script.js`)*.
    - Caso digite uma senha incorreta: exibe a mensagem **"Senha incorreta"** com animação de vibração (*shake*).
    - Caso acerte a senha: leva o usuário instantaneamente para a tela de invasão!
 

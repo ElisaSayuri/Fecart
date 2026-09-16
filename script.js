@@ -3,17 +3,11 @@
    ============================================================ */
 
 // ============================================================
-// CONFIGURAÇÃO DA SENHA DO WI-FI (Altere ou adicione senhas aqui)
+// CONFIGURAÇÃO DA SENHA DO WI-FI
 // ============================================================
 const ACCEPTED_PASSWORDS = [
-  'fecart',
-  'fecart2024',
-  'fecart2025',
-  'fecart2026',
-  'ciberseguranca',
-  '12345678',
-  'wifi123',
-  'wifi'
+  'F*@c#19_-F8..',
+  'f*@c#19_-f8..' // Suporte para facilitar no teclado do celular
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
