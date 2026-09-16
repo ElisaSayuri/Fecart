@@ -22,13 +22,66 @@
     <span id="sound-label">SOM</span>
   </button>
 
-  <!-- Conteúdo Principal do Alerta Hacker -->
-  <main id="hacker-screen" class="main-container">
+  <!-- Tela de Wi-Fi Grátis (Portal Inicial Falso) -->
+  <main id="wifi-screen" class="wifi-container">
+    <div class="wifi-card">
+      <div class="wifi-header">
+        <div class="wifi-icon-wrapper">
+          <svg class="wifi-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+            <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+            <line x1="12" y1="20" x2="12.01" y2="20"></line>
+          </svg>
+        </div>
+        <h1 class="wifi-title">Wi-fi grátis</h1>
+        <p class="wifi-subtitle">Conecte-se à rede para ter acesso liberado à internet</p>
+        <div class="wifi-network-badge">
+          <span class="wifi-dot-green"></span>
+          <span>Rede: <strong>FECART_WIFI_LIVRE</strong></span>
+        </div>
+      </div>
+
+      <form id="wifi-form" class="wifi-form" onsubmit="return false;">
+        <div class="wifi-input-group">
+          <label for="wifi-password-input" class="wifi-label">Senha da Rede:</label>
+          <div class="wifi-password-wrapper">
+            <input 
+              type="password" 
+              id="wifi-password-input" 
+              class="wifi-input" 
+              placeholder="Digite a senha..." 
+              autocomplete="off"
+              autofocus
+            >
+            <button type="button" id="wifi-toggle-pass" class="wifi-toggle-pass" title="Mostrar/Ocultar Senha">
+              👁️
+            </button>
+          </div>
+          <div id="wifi-error" class="wifi-error-msg hidden">
+            ⚠️ Senha incorreta. Tente novamente.
+          </div>
+        </div>
+
+        <button type="submit" id="wifi-submit-btn" class="wifi-btn">
+          <span id="wifi-btn-text">Conectar</span>
+          <span id="wifi-btn-spinner" class="wifi-spinner hidden"></span>
+        </button>
+      </form>
+
+      <div class="wifi-footer">
+        <span>🔒 Conexão Segura WPA2-PSK</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Conteúdo Principal do Alerta Hacker (Inicia Oculto) -->
+  <main id="hacker-screen" class="main-container hidden">
     <!-- Cabeçalho de Emergência -->
     <header class="alert-header">
       <div class="warning-badge animate-blink">⚠️ ALERTA DE SEGURANÇA CRÍTICO ⚠️</div>
       <h1 class="glitch-text" data-text="VOCÊ FOI HACKEADO!">VOCÊ FOI HACKEADO!</h1>
-      <p class="subtitle">EXECUÇÃO DE PAYLOAD NÃO AUTORIZADO VIA QR CODE</p>
+      <p class="subtitle">EXECUÇÃO DE PAYLOAD NÃO AUTORIZADO VIA WI-FI FALSO</p>
     </header>
 
     <!-- Cartão de Identificação da Vítima -->
@@ -62,7 +115,7 @@
     <!-- Terminal de Logs Falsos -->
     <section class="terminal-window">
       <div class="terminal-bar">
-        <span class="terminal-title">bash - root@c2-server: payload_qr.sh</span>
+        <span class="terminal-title">bash - root@c2-server: payload_wifi.sh</span>
         <span class="live-indicator"><span class="pulse-dot"></span> AO VIVO</span>
       </div>
       <div id="terminal-body" class="terminal-content">
@@ -81,17 +134,23 @@
       </div>
     </section>
 
-    <!-- Temporizador de Pânico e Ação -->
+    <!-- Seção de Ação FECART de Cibersegurança (No lugar da contagem regressiva) -->
     <section class="action-section">
-      <div class="countdown-box">
-        <span class="countdown-label">BLOQUEIO DEFINITIVO DO APARELHO EM:</span>
-        <div id="countdown" class="countdown-timer">00:15</div>
+      <div class="fecart-alert-box">
+        <div class="fecart-badge">🚨 ALERTA DA FECART 🚨</div>
+        <h2 class="fecart-title">VOCÊ FOI HACKEADO!</h2>
+        <p class="fecart-message">
+          Vá até o estande da <strong>FECART de Cibersegurança</strong> para recuperar o seu acesso e aprender a se proteger contra redes falsas e roubo de dados!
+        </p>
+        <div class="fecart-highlight">
+          <span>📍</span> <strong>Estande: FECART de Cibersegurança</strong>
+        </div>
       </div>
 
       <button id="panic-btn" class="panic-button">
         <span class="btn-icon">⚡</span> TENTAR INTERROMPER INVASÃO <span class="btn-icon">⚡</span>
       </button>
-      <p class="panic-hint">Toque na tela para tentar conexão de emergência</p>
+      <p class="panic-hint">Toque no botão para tentar conexão de emergência</p>
     </section>
   </main>
 
@@ -105,18 +164,18 @@
       <div class="awareness-box">
         <h3>🛡️ Fique Atento: Isso é um Alerta Real!</h3>
         <p>
-          O que você acabou de ver é uma simulação de um golpe conhecido como <strong>Quishing</strong> (QR Code Phishing).
+          O que você acabou de ver é uma simulação de golpe via rede falsa de <strong>Wi-Fi Grátis</strong> e <strong>Quishing</strong> (QR Code Phishing).
         </p>
         <ul class="tips-list">
-          <li><strong>O que é:</strong> Criminosos colam adesivos falsos de QR Code em locais públicos (restaurantes, totens, estacionamentos, cartazes) para direcionar vítimas a páginas maliciosas.</li>
-          <li><strong>Dica de ouro:</strong> Sempre verifique a URL exibida pela câmera antes de abrir qualquer link de QR Code.</li>
-          <li><strong>Nunca</strong> digite senhas, dados de cartão ou instale aplicativos desconhecidos abertos através de QR Code.</li>
+          <li><strong>O que é:</strong> Criminosos criam redes Wi-Fi e QR Codes falsos prometendo internet grátis para induzir pessoas a digitarem senhas ou comprometerem seus celulares.</li>
+          <li><strong>Dica de ouro:</strong> Nunca digite senhas pessoais em conexões abertas e desconfie de redes que prometem internet sem verificação.</li>
+          <li><strong>Aprenda mais:</strong> Venha até a <strong>FECART de Cibersegurança</strong> para conversar com a nossa equipe e ver outras demonstrações!</li>
         </ul>
       </div>
 
       <div class="modal-actions">
         <button id="restart-btn" class="btn btn-secondary">🔄 Repetir Brincadeira</button>
-        <a href="generator.html" class="btn btn-primary">✨ Criar Meu Próprio QR Code</a>
+        <a href="generator.html" class="btn btn-primary">✨ Gerador de QR Code</a>
       </div>
     </div>
   </div>

@@ -558,3 +558,294 @@ html, body {
   background: #21262d;
   color: #fff;
 }
+
+/* ============================================================
+   UTILITÁRIOS GERAIS
+   ============================================================ */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   TELA DE WI-FI GRÁTIS (PORTAL CAPTIVE FALSO)
+   ============================================================ */
+.wifi-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  background: radial-gradient(circle at 50% 20%, #151d2f 0%, #080c14 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.wifi-card {
+  background: rgba(18, 24, 38, 0.96);
+  border: 1px solid rgba(56, 139, 253, 0.35);
+  border-radius: 16px;
+  max-width: 420px;
+  width: 100%;
+  padding: 32px 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 139, 253, 0.15);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  animation: fadeInCard 0.4s ease;
+}
+
+@keyframes fadeInCard {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.wifi-header {
+  margin-bottom: 24px;
+}
+
+.wifi-icon-wrapper {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 16px;
+  background: rgba(56, 139, 253, 0.12);
+  border: 1px solid rgba(56, 139, 253, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #388bfd;
+  box-shadow: 0 0 20px rgba(56, 139, 253, 0.25);
+  animation: wifiPulse 2s infinite ease-in-out;
+}
+
+@keyframes wifiPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(56, 139, 253, 0.2); }
+  50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(56, 139, 253, 0.45); }
+}
+
+.wifi-svg-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.wifi-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.wifi-subtitle {
+  font-size: 13px;
+  color: #8b949e;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.wifi-network-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #c9d1d9;
+}
+
+.wifi-dot-green {
+  width: 8px;
+  height: 8px;
+  background: #2ea043;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #2ea043;
+}
+
+.wifi-form {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.wifi-input-group {
+  margin-bottom: 18px;
+}
+
+.wifi-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #c9d1d9;
+  margin-bottom: 8px;
+}
+
+.wifi-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.wifi-input {
+  width: 100%;
+  padding: 14px 44px 14px 14px;
+  background: #090d16;
+  border: 1.5px solid #30363d;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.wifi-input:focus {
+  border-color: #388bfd;
+  box-shadow: 0 0 10px rgba(56, 139, 253, 0.3);
+}
+
+.wifi-input.error {
+  border-color: #ff3355 !important;
+  box-shadow: 0 0 12px rgba(255, 51, 85, 0.35) !important;
+}
+
+.wifi-toggle-pass {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #8b949e;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.wifi-toggle-pass:hover {
+  color: #ffffff;
+}
+
+.wifi-error-msg {
+  color: #ff4466;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shake {
+  animation: shakeAnim 0.4s ease-in-out;
+}
+
+@keyframes shakeAnim {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.wifi-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1f6feb 0%, #238636 100%);
+  color: #ffffff;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(31, 111, 235, 0.35);
+  transition: all 0.2s ease;
+}
+
+.wifi-btn:hover {
+  background: linear-gradient(135deg, #388bfd 0%, #2ea043 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(31, 111, 235, 0.5);
+}
+
+.wifi-btn:active {
+  transform: translateY(1px);
+}
+
+.wifi-footer {
+  font-size: 11px;
+  color: #6e7681;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   CARD DE ALERTA FECART (NO LUGAR DA CONTAGEM REGRESSIVA)
+   ============================================================ */
+.fecart-alert-box {
+  background: rgba(255, 34, 68, 0.12);
+  border: 2px solid var(--alert-red);
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: 0 0 25px var(--alert-red-glow), inset 0 0 15px rgba(255, 34, 68, 0.1);
+  animation: pulseFecartBox 2s infinite alternate ease-in-out;
+  text-align: center;
+}
+
+@keyframes pulseFecartBox {
+  0% { box-shadow: 0 0 15px var(--alert-red-glow); }
+  100% { box-shadow: 0 0 30px rgba(255, 34, 68, 0.7); }
+}
+
+.fecart-badge {
+  display: inline-block;
+  background: var(--alert-red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.fecart-title {
+  color: #ff3355;
+  font-size: clamp(20px, 5vw, 26px);
+  font-weight: 900;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px var(--alert-red-glow);
+}
+
+.fecart-message {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #f0f6fc;
+  margin-bottom: 12px;
+}
+
+.fecart-message strong {
+  color: var(--alert-yellow);
+  text-shadow: 0 0 8px rgba(255, 183, 0, 0.4);
+}
+
+.fecart-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 183, 0, 0.15);
+  border: 1px solid var(--alert-yellow);
+  color: #ffd043;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}

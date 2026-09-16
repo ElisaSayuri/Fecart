@@ -59,8 +59,16 @@ Como o projeto é composto por arquivos estáticos (**HTML**, **CSS**, **JavaScr
 
 ## 🛡️ O que a simulação faz?
 
-- **Efeito Visual Hacker:** Chuva de caracteres Matrix no fundo, scanlines retrô de monitor CRT e alertas pulsantes.
-- **Detecção do Aparelho:** Identifica se a vítima está em um iPhone, Android, Windows ou Mac através do navegador.
-- **Áudio Sintetizado:** Bips de terminal e sirene gerados via Web Audio API (sem arquivos de áudio pesados).
-- **Botão de Pânico:** Um botão *"Tentar Interromper Invasão"* que acelera a destruição para dar mais suspense!
-- **Conscientização:** Revela a brincadeira e educa o usuário sobre os riscos de escanear QR Codes desconhecidos em locais públicos.
+1. **Tela de Entrada ("Wi-Fi Grátis"):**
+   - Simula um portal cautivo/tela de login para conexão Wi-Fi aberta no evento.
+   - O usuário precisa digitar a senha da rede.
+   - **Senhas Aceitas por padrão:** `fecart`, `fecart2024`, `fecart2025`, `fecart2026`, `ciberseguranca`, `12345678`, `wifi123` *(editável no início do arquivo `script.js`)*.
+   - Caso digite uma senha incorreta: exibe a mensagem **"Senha incorreta"** com animação de vibração (*shake*).
+   - Caso acerte a senha: leva o usuário instantaneamente para a tela de invasão!
+
+2. **Tela "Você foi Hackeado!":**
+   - **Efeito Visual Hacker:** Chuva de caracteres Matrix no fundo, scanlines retrô de monitor CRT e alertas pulsantes.
+   - **Detecção do Aparelho:** Identifica se a vítima está em um iPhone, Android, Windows ou Mac através do navegador.
+   - **Áudio Sintetizado:** Bips de terminal e sirene de alarme gerados via Web Audio API.
+   - **Alerta da FECART:** Substituindo o temporizador antigo, um card em destaque alerta a vítima para ir até o estande da **FECART de Cibersegurança** para entender o golpe.
+   - **Botão de Pânico / Conscientização:** Permite acionar o modal educativo sobre Quishing e redes falsas, com botão para reiniciar a brincadeira.

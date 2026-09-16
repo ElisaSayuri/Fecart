@@ -1,9 +1,32 @@
 /* ============================================================
-   PROJETO: VOCÊ FOI HACKEADO! (SIMULAÇÃO E CONSCIENTIZAÇÃO)
+   PROJETO: VOCÊ FOI HACKEADO! (SIMULAÇÃO & CONSCIENTIZAÇÃO FECART)
    ============================================================ */
 
+// ============================================================
+// CONFIGURAÇÃO DA SENHA DO WI-FI (Altere ou adicione senhas aqui)
+// ============================================================
+const ACCEPTED_PASSWORDS = [
+  'fecart',
+  'fecart2024',
+  'fecart2025',
+  'fecart2026',
+  'ciberseguranca',
+  '12345678',
+  'wifi123',
+  'wifi'
+];
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Elementos do DOM
+  // Elementos do DOM - Wi-Fi
+  const wifiScreen = document.getElementById('wifi-screen');
+  const hackerScreen = document.getElementById('hacker-screen');
+  const wifiForm = document.getElementById('wifi-form');
+  const wifiPasswordInput = document.getElementById('wifi-password-input');
+  const wifiTogglePass = document.getElementById('wifi-toggle-pass');
+  const wifiError = document.getElementById('wifi-error');
+  const wifiSubmitBtn = document.getElementById('wifi-submit-btn');
+
+  // Elementos do DOM - Tela Hacker
   const canvas = document.getElementById('matrix-canvas');
   const ctx = canvas.getContext('2d');
   const terminalBody = document.getElementById('terminal-body');
@@ -14,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressBar = document.getElementById('progress-bar');
   const progressPercent = document.getElementById('progress-percent');
   const progressStatus = document.getElementById('progress-status');
-  const countdownEl = document.getElementById('countdown');
   const panicBtn = document.getElementById('panic-btn');
   const soundToggle = document.getElementById('sound-toggle');
   const soundIcon = document.getElementById('sound-icon');
@@ -25,10 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Estados
   let soundEnabled = false;
   let audioCtx = null;
-  let countdownSeconds = 15;
-  let countdownTimer = null;
   let progress = 0;
   let isPrankRevealed = false;
+  let isHackedActive = false;
+  let progressInterval = null;
+  let autoRevealTimer = null;
+
+  if (wifiPasswordInput) {
+    wifiPasswordInput.focus();
+  }
 
   // ============================================================
   // 1. ÁUDIO SINTETIZADO (Web Audio API - 100% Offline e Leve)
@@ -105,15 +132,97 @@ document.addEventListener('DOMContentLoaded', () => {
   // Ativa áudio no primeiro toque em qualquer lugar da tela
   document.body.addEventListener('click', () => {
     initAudio();
-    if (!soundEnabled) {
-      soundEnabled = true;
-      soundIcon.textContent = '🔊';
-      soundLabel.textContent = 'LIGADO';
-    }
   }, { once: true });
 
   // ============================================================
-  // 2. CHUVA DE CÓDIGO MATRIX (Canvas)
+  // 2. TELA DE WI-FI GRÁTIS - VALIDAÇÃO E INTERAÇÃO
+  // ============================================================
+  
+  // Alternar visualização da senha
+  wifiTogglePass.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (wifiPasswordInput.type === 'password') {
+      wifiPasswordInput.type = 'text';
+      wifiTogglePass.textContent = '🙈';
+    } else {
+      wifiPasswordInput.type = 'password';
+      wifiTogglePass.textContent = '👁️';
+    }
+  });
+
+  // Limpar erro ao digitar
+  wifiPasswordInput.addEventListener('input', () => {
+    wifiError.classList.add('hidden');
+    wifiPasswordInput.classList.remove('error');
+  });
+
+  // Submissão do formulário de Wi-Fi
+  wifiForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const entered = wifiPasswordInput.value.trim().toLowerCase();
+
+    // Validação da senha digitada com a lista aceita
+    const isCorrect = entered !== '' && ACCEPTED_PASSWORDS.some(pwd => pwd.toLowerCase() === entered);
+
+    if (!isCorrect) {
+      // SENHA INCORRETA
+      wifiError.classList.remove('hidden');
+      wifiPasswordInput.classList.add('error');
+
+      // Reinicia animação de vibração (shake)
+      wifiPasswordInput.classList.remove('shake');
+      void wifiPasswordInput.offsetWidth;
+      wifiPasswordInput.classList.add('shake');
+
+      initAudio();
+      playTone(180, 0.2, 'sawtooth', 0.15);
+      wifiPasswordInput.focus();
+      return;
+    }
+
+    // SENHA CORRETA -> LEVA PARA A TELA "VOCÊ FOI HACKEADO"
+    wifiError.classList.add('hidden');
+    wifiPasswordInput.classList.remove('error');
+    triggerHackedScreen();
+  });
+
+  // Transição para a tela "Você foi Hackeado"
+  function triggerHackedScreen() {
+    initAudio();
+    soundEnabled = true;
+    soundIcon.textContent = '🔊';
+    soundLabel.textContent = 'LIGADO';
+
+    // Dispara alarme e efeito sonoro de invasão
+    playTone(150, 0.25, 'sawtooth', 0.25);
+    setTimeout(() => playSiren(), 180);
+
+    // Efeito de flash na tela para impacto visual imediato
+    document.body.style.filter = 'invert(1)';
+    setTimeout(() => {
+      document.body.style.filter = 'none';
+    }, 140);
+
+    // Oculta portal de Wi-Fi e revela alerta hacker
+    wifiScreen.classList.add('hidden');
+    hackerScreen.classList.remove('hidden');
+    isHackedActive = true;
+
+    // Dispara a simulação hacker
+    detectDeviceInfo();
+    startLogs();
+    startProgress();
+
+    // Revelação automática após 16 segundos caso não clique no botão
+    autoRevealTimer = setTimeout(() => {
+      if (!isPrankRevealed) {
+        showReveal();
+      }
+    }, 16000);
+  }
+
+  // ============================================================
+  // 3. CHUVA DE CÓDIGO MATRIX (Canvas)
   // ============================================================
   function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -208,16 +317,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. TERMINAL E LOGS FALSOS
   // ============================================================
   const fakeLogs = [
-    { text: '[+] Payload inicializado via protocolo QR Code', type: 'info', delay: 400 },
-    { text: '[+] Conexão reversa SSL criptografada estabelecida (Porta 443)', type: 'cyan', delay: 1100 },
-    { text: '[+] Bypassing sandbox de segurança do navegador... [SUCESSO]', type: 'info', delay: 1800 },
-    { text: '[+] Extraindo cache local, cookies e tokens de sessão...', type: 'warn', delay: 2600 },
-    { text: '[+] Acessando armazenamento interno: DCIM/Camera/WhatsApp...', type: 'warn', delay: 3500 },
-    { text: '[!] Permissão de gravação e microfone ativada em segundo plano', type: 'danger', delay: 4400 },
-    { text: '[+] Compactando 4.281 fotos e mensagens privadas...', type: 'cyan', delay: 5400 },
-    { text: '[!] UPLOAD REMOTO EM ANDAMENTO PARA SERVIDOR EXTERNO...', type: 'danger', delay: 6500 },
-    { text: '[!] Tentativa de cancelamento será bloqueada por watchdog', type: 'warn', delay: 7800 },
-    { text: '[!] Chave de criptografia AES-256 gerada para travamento total', type: 'danger', delay: 9200 }
+    { text: '[+] Conexão Wi-Fi interceptada via Ponto de Acesso falso', type: 'info', delay: 300 },
+    { text: '[+] Túnel reverso SSL criptografado ativo (Porta 443)', type: 'cyan', delay: 900 },
+    { text: '[+] Bypassing proteção de rede e sandbox do navegador... [SUCESSO]', type: 'info', delay: 1600 },
+    { text: '[+] Extraindo senhas salvas, cookies e tokens de sessão...', type: 'warn', delay: 2400 },
+    { text: '[+] Varrendo arquivos locais: DCIM/Camera/WhatsApp...', type: 'warn', delay: 3300 },
+    { text: '[!] Permissão de microfone e gravação habilitada remotamente', type: 'danger', delay: 4200 },
+    { text: '[+] Compactando mensagens e histórico privado para exfiltração...', type: 'cyan', delay: 5200 },
+    { text: '[!] UPLOAD EM ANDAMENTO PARA SERVIDOR C2 REMOTO...', type: 'danger', delay: 6300 },
+    { text: '[!] ALERTA CRÍTICO: Dispositivo comprometido por rede falsa!', type: 'warn', delay: 7500 },
+    { text: '[!] COMPAREÇA À FECART DE CIBERSEGURANÇA PARA INSTRUÇÕES', type: 'danger', delay: 8800 }
   ];
 
   function addLog(text, type = 'info') {
@@ -232,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function startLogs() {
     fakeLogs.forEach((item) => {
       setTimeout(() => {
-        if (!isPrankRevealed) {
+        if (!isPrankRevealed && isHackedActive) {
           addLog(item.text, item.type);
         }
       }, item.delay);
@@ -240,12 +349,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================================
-  // 5. BARRA DE PROGRESSO & CONTAGEM REGRESSIVA
+  // 5. BARRA DE PROGRESSO FICTÍCIA
   // ============================================================
   function startProgress() {
-    const interval = setInterval(() => {
-      if (isPrankRevealed) {
-        clearInterval(interval);
+    if (progressInterval) clearInterval(progressInterval);
+    progressInterval = setInterval(() => {
+      if (isPrankRevealed || !isHackedActive) {
+        clearInterval(progressInterval);
         return;
       }
       if (progress < 98) {
@@ -265,29 +375,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 450);
   }
 
-  function startCountdown() {
-    countdownTimer = setInterval(() => {
-      if (isPrankRevealed) {
-        clearInterval(countdownTimer);
-        return;
-      }
-      countdownSeconds--;
-      const formatted = countdownSeconds < 10 ? `00:0${countdownSeconds}` : `00:${countdownSeconds}`;
-      countdownEl.textContent = formatted;
-
-      if (countdownSeconds <= 5) {
-        playTone(900, 0.1, 'sawtooth', 0.15);
-      }
-
-      if (countdownSeconds <= 0) {
-        clearInterval(countdownTimer);
-        showReveal();
-      }
-    }, 1000);
-  }
-
   // ============================================================
-  // 6. BOTÃO DE PÂNICO ("TENTAR INTERROMPER")
+  // 6. BOTÃO DE AÇÃO ("TENTAR INTERROMPER")
   // ============================================================
   panicBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -297,28 +386,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Efeito de erro crítico ao tentar cancelar
     panicBtn.disabled = true;
     panicBtn.style.background = '#880015';
-    panicBtn.innerHTML = '🚨 ERRO: FALHA AO INTERROMPER! ACELERANDO DESTRUIÇÃO... 🚨';
+    panicBtn.innerHTML = '🚨 ERRO: FALHA AO INTERROMPER! ACELERANDO BLOQUEIO... 🚨';
     document.body.style.filter = 'invert(1)';
     setTimeout(() => {
       document.body.style.filter = 'none';
     }, 150);
 
     addLog('[CRITICAL] Tentativa de interrupção manual detectada pelo firewall!', 'danger');
-    addLog('[CRITICAL] Payload antecipando bloqueio do dispositivo!', 'danger');
+    addLog('[CRITICAL] Compareça imediatamente à FECART de Cibersegurança!', 'danger');
 
-    // Antecipa o final para dar susto imediato e revelar
+    if (autoRevealTimer) clearTimeout(autoRevealTimer);
     setTimeout(() => {
       showReveal();
-    }, 1800);
+    }, 1600);
   });
 
   // ============================================================
-  // 7. REVELAÇÃO DA BRINCADEIRA & CONSCIENTIZAÇÃO
+  // 7. REVELAÇÃO DA BRINCADEIRA & CONSCIENTIZAÇÃO FECART
   // ============================================================
   function showReveal() {
     if (isPrankRevealed) return;
     isPrankRevealed = true;
-    clearInterval(countdownTimer);
+    if (autoRevealTimer) clearTimeout(autoRevealTimer);
+    if (progressInterval) clearInterval(progressInterval);
 
     // Sucesso / som alegre
     playTone(523.25, 0.15, 'sine', 0.15); // C5
@@ -328,29 +418,32 @@ document.addEventListener('DOMContentLoaded', () => {
     revealModal.classList.remove('hidden');
   }
 
-  // Reiniciar a brincadeira
+  // Reiniciar a brincadeira e retornar à tela de Wi-Fi
   restartBtn.addEventListener('click', () => {
     isPrankRevealed = false;
+    isHackedActive = false;
+    if (autoRevealTimer) clearTimeout(autoRevealTimer);
+    if (progressInterval) clearInterval(progressInterval);
+
+    // Reseta tela hacker
     terminalBody.innerHTML = '';
     progress = 0;
     progressBar.style.width = '0%';
     progressPercent.textContent = '0%';
     progressStatus.textContent = 'Extraindo fotos e conversas...';
-    countdownSeconds = 15;
-    countdownEl.textContent = '00:15';
     panicBtn.disabled = false;
     panicBtn.style.background = '';
     panicBtn.innerHTML = '<span class="btn-icon">⚡</span> TENTAR INTERROMPER INVASÃO <span class="btn-icon">⚡</span>';
+
+    // Oculta modal e tela hacker, volta para o Wi-Fi
     revealModal.classList.add('hidden');
+    hackerScreen.classList.add('hidden');
+    wifiScreen.classList.remove('hidden');
 
-    startLogs();
-    startProgress();
-    startCountdown();
+    // Reseta campos do Wi-Fi
+    wifiPasswordInput.value = '';
+    wifiError.classList.add('hidden');
+    wifiPasswordInput.classList.remove('error');
+    wifiPasswordInput.focus();
   });
-
-  // Iniciar tudo ao carregar
-  detectDeviceInfo();
-  startLogs();
-  startProgress();
-  startCountdown();
 });
