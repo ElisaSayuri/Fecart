@@ -205,14 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dispara a simulação hacker
     detectDeviceInfo();
     startLogs();
-    startProgress();
-
-    // Revelação automática após 16 segundos caso não clique no botão
-    autoRevealTimer = setTimeout(() => {
-      if (!isPrankRevealed) {
-        showReveal();
-      }
-    }, 16000);
   }
 
   // ============================================================
@@ -383,19 +375,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Efeito de erro crítico ao tentar cancelar
     panicBtn.disabled = true;
     panicBtn.style.background = '#880015';
-    panicBtn.innerHTML = '🚨 ERRO: FALHA AO INTERROMPER! ACELERANDO BLOQUEIO... 🚨';
+    panicBtn.innerHTML = '🚨 ERRO: FALHA AO INTERROMPER! BLOQUEIO ATIVO 🚨';
     document.body.style.filter = 'invert(1)';
     setTimeout(() => {
       document.body.style.filter = 'none';
     }, 150);
 
     addLog('[CRITICAL] Tentativa de interrupção manual detectada pelo firewall!', 'danger');
-    addLog('[CRITICAL] Compareça imediatamente à FECART de Cibersegurança!', 'danger');
-
-    if (autoRevealTimer) clearTimeout(autoRevealTimer);
-    setTimeout(() => {
-      showReveal();
-    }, 1600);
+    addLog('[CRITICAL] VÁ ATÉ A FECART DE CIBERSEGURANÇA PARA ENTENDER O QUE ACONTECEU!', 'danger');
   });
 
   // ============================================================
