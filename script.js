@@ -347,6 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================
   function startProgress() {
     if (progressInterval) clearInterval(progressInterval);
+    if (!progressBar) return;
     progressInterval = setInterval(() => {
       if (isPrankRevealed || !isHackedActive) {
         clearInterval(progressInterval);
@@ -355,15 +356,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (progress < 98) {
         progress += Math.floor(Math.random() * 6) + 3;
         if (progress > 98) progress = 98;
-        progressBar.style.width = `${progress}%`;
-        progressPercent.textContent = `${progress}%`;
+        if (progressBar) progressBar.style.width = `${progress}%`;
+        if (progressPercent) progressPercent.textContent = `${progress}%`;
 
-        if (progress > 30 && progress < 60) {
-          progressStatus.textContent = 'Enviando contatos e histórico do WhatsApp...';
-        } else if (progress >= 60 && progress < 85) {
-          progressStatus.textContent = 'Copiando galeria de fotos e documentos...';
-        } else if (progress >= 85) {
-          progressStatus.textContent = 'Criptografando chave mestra do dispositivo...';
+        if (progressStatus) {
+          if (progress > 30 && progress < 60) {
+            progressStatus.textContent = 'Enviando contatos e histórico do WhatsApp...';
+          } else if (progress >= 60 && progress < 85) {
+            progressStatus.textContent = 'Copiando galeria de fotos e documentos...';
+          } else if (progress >= 85) {
+            progressStatus.textContent = 'Criptografando chave mestra do dispositivo...';
+          }
         }
       }
     }, 450);
@@ -422,9 +425,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reseta tela hacker
     terminalBody.innerHTML = '';
     progress = 0;
-    progressBar.style.width = '0%';
-    progressPercent.textContent = '0%';
-    progressStatus.textContent = 'Extraindo fotos e conversas...';
+    if (progressBar) progressBar.style.width = '0%';
+    if (progressPercent) progressPercent.textContent = '0%';
+    if (progressStatus) progressStatus.textContent = 'Extraindo fotos e conversas...';
     panicBtn.disabled = false;
     panicBtn.style.background = '';
     panicBtn.innerHTML = '<span class="btn-icon">⚡</span> TENTAR INTERROMPER INVASÃO <span class="btn-icon">⚡</span>';
