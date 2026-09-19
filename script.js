@@ -316,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   function addLog(text, type = 'info') {
+    if (!terminalBody) return;
     const p = document.createElement('p');
     p.className = `log-line ${type}`;
     p.innerHTML = `<span class="prompt">&gt;</span> <span>${text}</span>`;
@@ -410,7 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (progressInterval) clearInterval(progressInterval);
 
     // Reseta tela hacker
-    terminalBody.innerHTML = '';
+    if (terminalBody) terminalBody.innerHTML = '';
     progress = 0;
     if (progressBar) progressBar.style.width = '0%';
     if (progressPercent) progressPercent.textContent = '0%';
