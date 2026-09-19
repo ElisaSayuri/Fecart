@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { text: '[+] Compactando mensagens e histórico privado para exfiltração...', type: 'cyan', delay: 5200 },
     { text: '[!] UPLOAD EM ANDAMENTO PARA SERVIDOR C2 REMOTO...', type: 'danger', delay: 6300 },
     { text: '[!] ALERTA CRÍTICO: Dispositivo comprometido por rede falsa!', type: 'warn', delay: 7500 },
-    { text: '[!] COMPAREÇA À FECART DE CIBERSEGURANÇA PARA INSTRUÇÕES', type: 'danger', delay: 8800 }
+    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 8800 }
   ];
 
   function addLog(text, type = 'info') {
