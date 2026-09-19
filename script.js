@@ -304,15 +304,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================
   const fakeLogs = [
     { text: '[+] Conexão Wi-Fi interceptada via Ponto de Acesso falso', type: 'info', delay: 300 },
-    { text: '[+] Túnel reverso SSL criptografado ativo (Porta 443)', type: 'cyan', delay: 900 },
-    { text: '[+] Bypassing proteção de rede e sandbox do navegador... [SUCESSO]', type: 'info', delay: 1600 },
-    { text: '[+] Extraindo senhas salvas, cookies e tokens de sessão...', type: 'warn', delay: 2400 },
-    { text: '[+] Varrendo arquivos locais: DCIM/Camera/WhatsApp...', type: 'warn', delay: 3300 },
-    { text: '[!] Permissão de microfone e gravação habilitada remotamente', type: 'danger', delay: 4200 },
-    { text: '[+] Compactando mensagens e histórico privado para exfiltração...', type: 'cyan', delay: 5200 },
-    { text: '[!] UPLOAD EM ANDAMENTO PARA SERVIDOR C2 REMOTO...', type: 'danger', delay: 6300 },
-    { text: '[!] ALERTA CRÍTICO: Dispositivo comprometido por rede falsa!', type: 'warn', delay: 7500 },
-    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 8800 }
+    { text: '[+] Túnel reverso SSL criptografado ativo (Porta 443)', type: 'cyan', delay: 800 },
+    { text: '[!] ALERTA CRÍTICO: Dispositivo comprometido por rede falsa!', type: 'warn', delay: 1500 },
+    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 2300 },
+    { text: '[!] ESTANDE DA FECART DE CIBERSEGURANÇA: 5º ANDAR', type: 'warn', delay: 3100 },
+    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 4000 },
+    { text: '[+] Rastreamento ativo -> Estande FECART Cibersegurança, 5º Andar', type: 'cyan', delay: 4900 },
+    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 5800 },
+    { text: '[!] INSTRUÇÃO FINAL: Vá até a FECART de Cibersegurança no 5º andar!', type: 'danger', delay: 6700 },
+    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 7600 }
   ];
 
   function addLog(text, type = 'info') {
@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 150);
 
     addLog('[CRITICAL] Tentativa de interrupção manual detectada pelo firewall!', 'danger');
-    addLog('[CRITICAL] VÁ ATÉ A FECART DE CIBERSEGURANÇA PARA ENTENDER O QUE ACONTECEU!', 'danger');
+    addLog('[CRITICAL] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', 'danger');
   });
 
   // ============================================================
