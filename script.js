@@ -5,9 +5,13 @@
 // ============================================================
 // CONFIGURAÇÃO DE LOGIN E SENHA DO WI-FI
 // ============================================================
-// Se ACCEPTED_LOGINS estiver vazio ([]), qualquer login informado será aceito.
-// Caso queira restringir logins específicos, adicione-os na lista abaixo.
-const ACCEPTED_LOGINS = []; // Ex: ['fecart', 'admin', 'visitante']
+const ACCEPTED_LOGINS = [
+  'FECART_5_andar',
+  'fecart_5_andar',
+  'FECART_5_ANDAR',
+  'fecart 5 andar',
+  'fecart5andar'
+];
 
 const ACCEPTED_PASSWORDS = [
   'F*@c#19_-F8..',
@@ -176,22 +180,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let hasError = false;
 
     // Validação do Login
-    if (!enteredLogin) {
+    const isLoginCorrect = enteredLogin !== '' && ACCEPTED_LOGINS.some(login => login.toLowerCase() === enteredLogin.toLowerCase());
+
+    if (!isLoginCorrect) {
       if (wifiLoginError) {
-        wifiLoginError.textContent = '⚠️ Por favor, digite seu login.';
-        wifiLoginError.classList.remove('hidden');
-      }
-      if (wifiLoginInput) {
-        wifiLoginInput.classList.add('error');
-        wifiLoginInput.classList.remove('shake');
-        void wifiLoginInput.offsetWidth;
-        wifiLoginInput.classList.add('shake');
-        wifiLoginInput.focus();
-      }
-      hasError = true;
-    } else if (ACCEPTED_LOGINS.length > 0 && !ACCEPTED_LOGINS.some(login => login.toLowerCase() === enteredLogin.toLowerCase())) {
-      if (wifiLoginError) {
-        wifiLoginError.textContent = '⚠️ Login incorreto ou não cadastrado.';
+        if (!enteredLogin) {
+          wifiLoginError.textContent = '⚠️ Por favor, digite o login da rede.';
+        } else {
+          wifiLoginError.textContent = '⚠️ Login incorreto. Tente novamente.';
+        }
         wifiLoginError.classList.remove('hidden');
       }
       if (wifiLoginInput) {

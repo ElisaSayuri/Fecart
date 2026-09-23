@@ -61,8 +61,8 @@ Como o projeto é composto por arquivos estáticos (**HTML**, **CSS**, **JavaScr
 
 1. **Tela de Entrada ("Wi-Fi Grátis"):**
    - Simula um portal cautivo/tela de login para conexão Wi-Fi aberta no evento.
-   - O usuário precisa informar seu **Login / Usuário** e a **Senha da rede**.
-   - **Login:** Qualquer identificação informada (ou configurável via `ACCEPTED_LOGINS` no início de `script.js`).
+   - O usuário precisa informar o **Login** e a **Senha da rede**.
+   - **Login Configurado:** `FECART_5_andar` *(editável no início do arquivo `script.js`)*.
    - **Senha Configurada:** `F*@c#19_-F8..` *(editável no início do arquivo `script.js`)*.
    - Caso deixe campos vazios ou informe dados incorretos: exibe avisos de erro dedicados e animação de vibração (*shake*).
    - Ao preencher o login e a senha correta: os dados são interceptados e o usuário é levado instantaneamente para a tela de invasão!
