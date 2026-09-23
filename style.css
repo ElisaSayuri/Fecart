@@ -683,6 +683,7 @@ html, body {
   margin-bottom: 8px;
 }
 
+.wifi-input-wrapper,
 .wifi-password-wrapper {
   position: relative;
   display: flex;
@@ -691,7 +692,7 @@ html, body {
 
 .wifi-input {
   width: 100%;
-  padding: 14px 44px 14px 14px;
+  padding: 14px 16px;
   background: #090d16;
   border: 1.5px solid #30363d;
   border-radius: 8px;
@@ -700,6 +701,10 @@ html, body {
   font-size: 15px;
   outline: none;
   transition: all 0.2s ease;
+}
+
+.wifi-password-wrapper .wifi-input {
+  padding-right: 44px;
 }
 
 .wifi-input:focus {

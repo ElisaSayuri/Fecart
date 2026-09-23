@@ -3,8 +3,12 @@
    ============================================================ */
 
 // ============================================================
-// CONFIGURAÇÃO DA SENHA DO WI-FI
+// CONFIGURAÇÃO DE LOGIN E SENHA DO WI-FI
 // ============================================================
+// Se ACCEPTED_LOGINS estiver vazio ([]), qualquer login informado será aceito.
+// Caso queira restringir logins específicos, adicione-os na lista abaixo.
+const ACCEPTED_LOGINS = []; // Ex: ['fecart', 'admin', 'visitante']
+
 const ACCEPTED_PASSWORDS = [
   'F*@c#19_-F8..',
   'f*@c#19_-f8..' // Suporte para facilitar no teclado do celular
@@ -15,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const wifiScreen = document.getElementById('wifi-screen');
   const hackerScreen = document.getElementById('hacker-screen');
   const wifiForm = document.getElementById('wifi-form');
+  const wifiLoginInput = document.getElementById('wifi-login-input');
+  const wifiLoginError = document.getElementById('wifi-login-error');
   const wifiPasswordInput = document.getElementById('wifi-password-input');
   const wifiTogglePass = document.getElementById('wifi-toggle-pass');
   const wifiError = document.getElementById('wifi-error');
@@ -26,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const terminalBody = document.getElementById('terminal-body');
   const devModel = document.getElementById('dev-model');
   const devOs = document.getElementById('dev-os');
+  const devLogin = document.getElementById('dev-login');
   const devIp = document.getElementById('dev-ip');
   const devLoc = document.getElementById('dev-loc');
   const progressBar = document.getElementById('progress-bar');
@@ -47,7 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let progressInterval = null;
   let autoRevealTimer = null;
 
-  if (wifiPasswordInput) {
+  if (wifiLoginInput) {
+    wifiLoginInput.focus();
+  } else if (wifiPasswordInput) {
     wifiPasswordInput.focus();
   }
 
@@ -144,7 +153,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Limpar erro ao digitar
+  // Limpar erro de login ao digitar
+  if (wifiLoginInput) {
+    wifiLoginInput.addEventListener('input', () => {
+      if (wifiLoginError) wifiLoginError.classList.add('hidden');
+      wifiLoginInput.classList.remove('error');
+    });
+  }
+
+  // Limpar erro de senha ao digitar
   wifiPasswordInput.addEventListener('input', () => {
     wifiError.classList.add('hidden');
     wifiPasswordInput.classList.remove('error');
@@ -153,35 +170,78 @@ document.addEventListener('DOMContentLoaded', () => {
   // Submissão do formulário de Wi-Fi
   wifiForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const entered = wifiPasswordInput.value.trim().toLowerCase();
+    const enteredLogin = wifiLoginInput ? wifiLoginInput.value.trim() : '';
+    const enteredPassword = wifiPasswordInput.value.trim().toLowerCase();
 
-    // Validação da senha digitada com a lista aceita
-    const isCorrect = entered !== '' && ACCEPTED_PASSWORDS.some(pwd => pwd.toLowerCase() === entered);
+    let hasError = false;
 
-    if (!isCorrect) {
-      // SENHA INCORRETA
+    // Validação do Login
+    if (!enteredLogin) {
+      if (wifiLoginError) {
+        wifiLoginError.textContent = '⚠️ Por favor, digite seu login.';
+        wifiLoginError.classList.remove('hidden');
+      }
+      if (wifiLoginInput) {
+        wifiLoginInput.classList.add('error');
+        wifiLoginInput.classList.remove('shake');
+        void wifiLoginInput.offsetWidth;
+        wifiLoginInput.classList.add('shake');
+        wifiLoginInput.focus();
+      }
+      hasError = true;
+    } else if (ACCEPTED_LOGINS.length > 0 && !ACCEPTED_LOGINS.some(login => login.toLowerCase() === enteredLogin.toLowerCase())) {
+      if (wifiLoginError) {
+        wifiLoginError.textContent = '⚠️ Login incorreto ou não cadastrado.';
+        wifiLoginError.classList.remove('hidden');
+      }
+      if (wifiLoginInput) {
+        wifiLoginInput.classList.add('error');
+        wifiLoginInput.classList.remove('shake');
+        void wifiLoginInput.offsetWidth;
+        wifiLoginInput.classList.add('shake');
+        wifiLoginInput.focus();
+      }
+      hasError = true;
+    } else {
+      if (wifiLoginError) wifiLoginError.classList.add('hidden');
+      if (wifiLoginInput) wifiLoginInput.classList.remove('error');
+    }
+
+    // Validação da Senha
+    const isPasswordCorrect = enteredPassword !== '' && ACCEPTED_PASSWORDS.some(pwd => pwd.toLowerCase() === enteredPassword);
+
+    if (!isPasswordCorrect) {
       wifiError.classList.remove('hidden');
       wifiPasswordInput.classList.add('error');
-
-      // Reinicia animação de vibração (shake)
       wifiPasswordInput.classList.remove('shake');
       void wifiPasswordInput.offsetWidth;
       wifiPasswordInput.classList.add('shake');
 
+      if (!hasError) {
+        wifiPasswordInput.focus();
+      }
+      hasError = true;
+    } else {
+      wifiError.classList.add('hidden');
+      wifiPasswordInput.classList.remove('error');
+    }
+
+    if (hasError) {
       initAudio();
       playTone(180, 0.2, 'sawtooth', 0.15);
-      wifiPasswordInput.focus();
       return;
     }
 
-    // SENHA CORRETA -> LEVA PARA A TELA "VOCÊ FOI HACKEADO"
+    // LOGIN E SENHA CORRETOS -> LEVA PARA A TELA "VOCÊ FOI HACKEADO"
     wifiError.classList.add('hidden');
     wifiPasswordInput.classList.remove('error');
-    triggerHackedScreen();
+    if (wifiLoginError) wifiLoginError.classList.add('hidden');
+    if (wifiLoginInput) wifiLoginInput.classList.remove('error');
+    triggerHackedScreen(enteredLogin);
   });
 
   // Transição para a tela "Você foi Hackeado"
-  function triggerHackedScreen() {
+  function triggerHackedScreen(capturedLogin = '') {
     initAudio();
     soundEnabled = true;
     soundIcon.textContent = '🔊';
@@ -203,8 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
     isHackedActive = true;
 
     // Dispara a simulação hacker
-    detectDeviceInfo();
-    startLogs();
+    detectDeviceInfo(capturedLogin);
+    startLogs(capturedLogin);
   }
 
   // ============================================================
@@ -245,7 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================
   // 3. DETECÇÃO REAL DE DISPOSITIVO E IP
   // ============================================================
-  function detectDeviceInfo() {
+  function detectDeviceInfo(capturedLogin = '') {
+    if (devLogin) {
+      devLogin.textContent = capturedLogin || 'Visitante Desconhecido';
+    }
+
     const ua = navigator.userAgent;
     let model = "Dispositivo Móvel Desconhecido";
     let os = "Sistema Operacional Desconhecido";
@@ -302,19 +366,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================
   // 4. TERMINAL E LOGS FALSOS
   // ============================================================
-  const fakeLogs = [
-    { text: '[+] Conexão Wi-Fi interceptada via Ponto de Acesso falso', type: 'info', delay: 300 },
-    { text: '[+] Túnel reverso SSL criptografado ativo (Porta 443)', type: 'cyan', delay: 800 },
-    { text: '[!] ALERTA CRÍTICO: Dispositivo comprometido por rede falsa!', type: 'warn', delay: 1500 },
-    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 2300 },
-    { text: '[!] ESTANDE DA FECART DE CIBERSEGURANÇA: 5º ANDAR', type: 'warn', delay: 3100 },
-    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 4000 },
-    { text: '[+] Rastreamento ativo -> Estande FECART Cibersegurança, 5º Andar', type: 'cyan', delay: 4900 },
-    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 5800 },
-    { text: '[!] INSTRUÇÃO FINAL: Vá até a FECART de Cibersegurança no 5º andar!', type: 'danger', delay: 6700 },
-    { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 7600 }
-  ];
-
   function addLog(text, type = 'info') {
     if (!terminalBody) return;
     const p = document.createElement('p');
@@ -325,7 +376,25 @@ document.addEventListener('DOMContentLoaded', () => {
     playTone(1200 + Math.random() * 400, 0.04, 'square', 0.04);
   }
 
-  function startLogs() {
+  function startLogs(capturedLogin = '') {
+    const credText = capturedLogin 
+      ? `[!] CREDENCIAIS CAPTURADAS: Login "${capturedLogin}" | Senha interceptada!`
+      : `[!] CREDENCIAIS CAPTURADAS: Senha WPA interceptada com sucesso!`;
+
+    const fakeLogs = [
+      { text: '[+] Conexão Wi-Fi interceptada via Ponto de Acesso falso', type: 'info', delay: 300 },
+      { text: credText, type: 'danger', delay: 800 },
+      { text: '[+] Túnel reverso SSL criptografado ativo (Porta 443)', type: 'cyan', delay: 1400 },
+      { text: '[!] ALERTA CRÍTICO: Dispositivo comprometido por rede falsa!', type: 'warn', delay: 2100 },
+      { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 2900 },
+      { text: '[!] ESTANDE DA FECART DE CIBERSEGURANÇA: 5º ANDAR', type: 'warn', delay: 3700 },
+      { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 4500 },
+      { text: '[+] Rastreamento ativo -> Estande FECART Cibersegurança, 5º Andar', type: 'cyan', delay: 5300 },
+      { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 6100 },
+      { text: '[!] INSTRUÇÃO FINAL: Vá até a FECART de Cibersegurança no 5º andar!', type: 'danger', delay: 6900 },
+      { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 7700 }
+    ];
+
     fakeLogs.forEach((item) => {
       setTimeout(() => {
         if (!isPrankRevealed && isHackedActive) {
@@ -426,9 +495,19 @@ document.addEventListener('DOMContentLoaded', () => {
     wifiScreen.classList.remove('hidden');
 
     // Reseta campos do Wi-Fi
+    if (wifiLoginInput) {
+      wifiLoginInput.value = '';
+      wifiLoginInput.classList.remove('error');
+      if (wifiLoginError) wifiLoginError.classList.add('hidden');
+    }
     wifiPasswordInput.value = '';
     wifiError.classList.add('hidden');
     wifiPasswordInput.classList.remove('error');
-    wifiPasswordInput.focus();
+
+    if (wifiLoginInput) {
+      wifiLoginInput.focus();
+    } else {
+      wifiPasswordInput.focus();
+    }
   });
 });
