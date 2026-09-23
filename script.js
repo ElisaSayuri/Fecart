@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!enteredLogin) {
           wifiLoginError.textContent = '⚠️ Por favor, digite o login da rede.';
         } else {
-          wifiLoginError.textContent = '⚠️ Login não reconhecido. Tente novamente.';
+          wifiLoginError.textContent = '⚠️ Login não reconhecido.';
         }
         wifiLoginError.classList.remove('hidden');
       }
