@@ -68,8 +68,7 @@ Como o projeto é composto por arquivos estáticos (**HTML**, **CSS**, **JavaScr
    - Ao preencher o login e a senha correta: os dados avançam para a tela demonstrativa de segurança digital.
 
 2. **Tela de Demonstração de Segurança:**
-   - **Identificação da Conexão:** Mostra modelo do aparelho, sistema operacional, login utilizado e IP aproximado para demonstrar os metadados visíveis em uma navegação comum.
-   - **Terminal Informativo:** Exibe logs didáticos alertando sobre boas práticas de tráfego de dados.
+   - **Terminal Informativo:** Exibe logs didáticos em tempo real alertando sobre boas práticas e riscos em redes abertas.
    - **Áudio Sintetizado:** Tons sutis e agradáveis via Web Audio API.
    - **Estande da FECART:** Card convidando os participantes a visitarem a **FECART de Cibersegurança no 5º andar** para aprender sobre privacidade e proteção digital.
    - **Botão de Dicas de Segurança:** Abre um modal educativo com orientações práticas contra redes abertas e Quishing, permitindo reiniciar a demonstração.

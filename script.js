@@ -32,11 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Elementos do DOM - Tela de Demonstração
   const terminalBody = document.getElementById('terminal-body');
-  const devModel = document.getElementById('dev-model');
-  const devOs = document.getElementById('dev-os');
-  const devLogin = document.getElementById('dev-login');
-  const devIp = document.getElementById('dev-ip');
-  const devLoc = document.getElementById('dev-loc');
   const progressBar = document.getElementById('progress-bar');
   const progressPercent = document.getElementById('progress-percent');
   const progressStatus = document.getElementById('progress-status');
@@ -237,74 +232,12 @@ document.addEventListener('DOMContentLoaded', () => {
     hackerScreen.classList.remove('hidden');
     isHackedActive = true;
 
-    // Dispara a apresentação dos dados e logs educativos
-    detectDeviceInfo(capturedLogin);
+    // Dispara a apresentação dos logs educativos
     startLogs(capturedLogin);
   }
 
   // ============================================================
-  // 3. DETECÇÃO REAL DE DISPOSITIVO E IP
-  // ============================================================
-  function detectDeviceInfo(capturedLogin = '') {
-    if (devLogin) {
-      devLogin.textContent = capturedLogin || 'Visitante Desconhecido';
-    }
-
-    const ua = navigator.userAgent;
-    let model = "Dispositivo Móvel Desconhecido";
-    let os = "Sistema Operacional Desconhecido";
-
-    // Detecção de SO e Modelo
-    if (/iPhone/i.test(ua)) {
-      model = "Apple iPhone (" + (window.screen.width + "x" + window.screen.height) + ")";
-      os = "Apple iOS";
-    } else if (/iPad/i.test(ua)) {
-      model = "Apple iPad";
-      os = "iPadOS";
-    } else if (/Android/i.test(ua)) {
-      if (/Samsung/i.test(ua) || /SM-/i.test(ua)) model = "Samsung Galaxy";
-      else if (/Xiaomi/i.test(ua) || /Redmi/i.test(ua)) model = "Xiaomi / Redmi";
-      else if (/Motorola/i.test(ua) || /Moto/i.test(ua)) model = "Motorola Moto";
-      else model = "Aparelho Android";
-      os = "Google Android";
-    } else if (/Windows NT/i.test(ua)) {
-      model = "Computador / Notebook";
-      os = "Microsoft Windows";
-    } else if (/Macintosh|Mac OS X/i.test(ua)) {
-      model = "Apple Mac";
-      os = "macOS";
-    } else if (/Linux/i.test(ua)) {
-      model = "Estação de Trabalho";
-      os = "GNU/Linux";
-    }
-
-    devModel.textContent = model;
-    devOs.textContent = os;
-
-    // Busca IP e Cidade aproximada
-    fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
-      .then(data => {
-        devIp.textContent = data.ip || '189.34.218.42';
-        fetch(`https://ipapi.co/${data.ip}/json/`)
-          .then(res => res.json())
-          .then(locData => {
-            const city = locData.city || 'São Paulo';
-            const region = locData.region_code || 'BR';
-            devLoc.textContent = `${city}, ${region}`;
-          })
-          .catch(() => {
-            devLoc.textContent = 'Brasil (Geolocalização Ativa)';
-          });
-      })
-      .catch(() => {
-        devIp.textContent = '189.34.218.42';
-        devLoc.textContent = 'São Paulo, Brasil';
-      });
-  }
-
-  // ============================================================
-  // 4. TERMINAL E LOGS FALSOS
+  // 3. TERMINAL E LOGS EDUCATIVOS
   // ============================================================
   function addLog(text, type = 'info') {
     if (!terminalBody) return;
@@ -324,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const demoLogs = [
       { text: '[+] Conexão demonstrativa estabelecida no portal Wi-Fi', type: 'info', delay: 300 },
       { text: credText, type: 'cyan', delay: 800 },
-      { text: '[i] Informações públicas do dispositivo identificadas na sessão', type: 'info', delay: 1500 },
+      { text: '[i] Demonstração educativa de segurança em andamento', type: 'info', delay: 1500 },
       { text: '[!] Em redes abertas sem criptografia, informações podem ficar visíveis', type: 'warn', delay: 2300 },
       { text: '[+] Proteja seus dados: desconfie de portais abertos desconhecidos', type: 'cyan', delay: 3100 },
       { text: '[i] Estande: FECART de Cibersegurança no 5º Andar', type: 'info', delay: 3900 },
@@ -341,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================================
-  // 5. BOTÃO DE DICAS DE SEGURANÇA
+  // 4. BOTÃO DE DICAS DE SEGURANÇA
   // ============================================================
   if (panicBtn) {
     panicBtn.addEventListener('click', (e) => {
