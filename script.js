@@ -30,9 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const wifiError = document.getElementById('wifi-error');
   const wifiSubmitBtn = document.getElementById('wifi-submit-btn');
 
-  // Elementos do DOM - Tela Hacker
-  const canvas = document.getElementById('matrix-canvas');
-  const ctx = canvas.getContext('2d');
+  // Elementos do DOM - Tela de Demonstração
   const terminalBody = document.getElementById('terminal-body');
   const devModel = document.getElementById('dev-model');
   const devOs = document.getElementById('dev-os');
@@ -243,41 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
     detectDeviceInfo(capturedLogin);
     startLogs(capturedLogin);
   }
-
-  // ============================================================
-  // 3. CHUVA DE CÓDIGO MATRIX (Canvas)
-  // ============================================================
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  const characters = '0123456789ABCDEF$#@%&*+-/<>{}[]=XYZﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ';
-  const fontSize = 14;
-  let columns = Math.floor(window.innerWidth / fontSize);
-  let drops = Array(columns).fill(1);
-
-  function drawMatrix() {
-    ctx.fillStyle = 'rgba(7, 9, 14, 0.08)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#00ff66';
-    ctx.font = `${fontSize}px monospace`;
-
-    for (let i = 0; i < drops.length; i++) {
-      const char = characters.charAt(Math.floor(Math.random() * characters.length));
-      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-      drops[i]++;
-    }
-    requestAnimationFrame(drawMatrix);
-  }
-  requestAnimationFrame(drawMatrix);
 
   // ============================================================
   // 3. DETECÇÃO REAL DE DISPOSITIVO E IP
