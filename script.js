@@ -1,5 +1,5 @@
 /* ============================================================
-   PROJETO: VOCÊ FOI HACKEADO! (SIMULAÇÃO & CONSCIENTIZAÇÃO FECART)
+   PROJETO: DEMONSTRAÇÃO & CONSCIENTIZAÇÃO FECART CIBERSEGURANÇA
    ============================================================ */
 
 // ============================================================
@@ -99,23 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function playSiren() {
+    // Substituído por tom suave informativo
     if (!soundEnabled || !audioCtx) return;
-    try {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sawtooth';
-      const now = audioCtx.currentTime;
-      osc.frequency.setValueAtTime(440, now);
-      osc.frequency.linearRampToValueAtTime(880, now + 0.3);
-      osc.frequency.linearRampToValueAtTime(440, now + 0.6);
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(now + 0.6);
-    } catch (e) {}
+    playTone(587.33, 0.2, 'sine', 0.1);
   }
 
   function toggleSound() {
@@ -229,37 +215,31 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // LOGIN E SENHA CORRETOS -> LEVA PARA A TELA "VOCÊ FOI HACKEADO"
+    // LOGIN E SENHA CORRETOS -> LEVA PARA A TELA DE DEMONSTRAÇÃO
     wifiError.classList.add('hidden');
     wifiPasswordInput.classList.remove('error');
     if (wifiLoginError) wifiLoginError.classList.add('hidden');
     if (wifiLoginInput) wifiLoginInput.classList.remove('error');
-    triggerHackedScreen(enteredLogin);
+    triggerDemoScreen(enteredLogin);
   });
 
-  // Transição para a tela "Você foi Hackeado"
-  function triggerHackedScreen(capturedLogin = '') {
+  // Transição para a tela de demonstração educativa
+  function triggerDemoScreen(capturedLogin = '') {
     initAudio();
     soundEnabled = true;
     soundIcon.textContent = '🔊';
     soundLabel.textContent = 'LIGADO';
 
-    // Dispara alarme e efeito sonoro de invasão
-    playTone(150, 0.25, 'sawtooth', 0.25);
-    setTimeout(() => playSiren(), 180);
+    // Som suave de confirmação de conexão
+    playTone(520, 0.1, 'sine', 0.1);
+    setTimeout(() => playTone(659.25, 0.15, 'sine', 0.1), 100);
 
-    // Efeito de flash na tela para impacto visual imediato
-    document.body.style.filter = 'invert(1)';
-    setTimeout(() => {
-      document.body.style.filter = 'none';
-    }, 140);
-
-    // Oculta portal de Wi-Fi e revela alerta hacker
+    // Oculta portal de Wi-Fi e revela demonstração educativa
     wifiScreen.classList.add('hidden');
     hackerScreen.classList.remove('hidden');
     isHackedActive = true;
 
-    // Dispara a simulação hacker
+    // Dispara a apresentação dos dados e logs educativos
     detectDeviceInfo(capturedLogin);
     startLogs(capturedLogin);
   }
@@ -370,29 +350,25 @@ document.addEventListener('DOMContentLoaded', () => {
     p.innerHTML = `<span class="prompt">&gt;</span> <span>${text}</span>`;
     terminalBody.appendChild(p);
     terminalBody.scrollTop = terminalBody.scrollHeight;
-    playTone(1200 + Math.random() * 400, 0.04, 'square', 0.04);
+    playTone(800 + Math.random() * 200, 0.03, 'sine', 0.04);
   }
 
   function startLogs(capturedLogin = '') {
     const credText = capturedLogin 
-      ? `[!] CREDENCIAIS CAPTURADAS: Login "${capturedLogin}" | Senha interceptada!`
-      : `[!] CREDENCIAIS CAPTURADAS: Senha WPA interceptada com sucesso!`;
+      ? `[i] Login inserido na demonstração: "${capturedLogin}"`
+      : `[i] Dados inseridos no formulário da rede`;
 
-    const fakeLogs = [
-      { text: '[+] Conexão Wi-Fi interceptada via Ponto de Acesso falso', type: 'info', delay: 300 },
-      { text: credText, type: 'danger', delay: 800 },
-      { text: '[+] Túnel reverso SSL criptografado ativo (Porta 443)', type: 'cyan', delay: 1400 },
-      { text: '[!] ALERTA CRÍTICO: Dispositivo comprometido por rede falsa!', type: 'warn', delay: 2100 },
-      { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 2900 },
-      { text: '[!] ESTANDE DA FECART DE CIBERSEGURANÇA: 5º ANDAR', type: 'warn', delay: 3700 },
-      { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 4500 },
-      { text: '[+] Rastreamento ativo -> Estande FECART Cibersegurança, 5º Andar', type: 'cyan', delay: 5300 },
-      { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 6100 },
-      { text: '[!] INSTRUÇÃO FINAL: Vá até a FECART de Cibersegurança no 5º andar!', type: 'danger', delay: 6900 },
-      { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 7700 }
+    const demoLogs = [
+      { text: '[+] Conexão demonstrativa estabelecida no portal Wi-Fi', type: 'info', delay: 300 },
+      { text: credText, type: 'cyan', delay: 800 },
+      { text: '[i] Informações públicas do dispositivo identificadas na sessão', type: 'info', delay: 1500 },
+      { text: '[!] Em redes abertas sem criptografia, informações podem ficar visíveis', type: 'warn', delay: 2300 },
+      { text: '[+] Proteja seus dados: desconfie de portais abertos desconhecidos', type: 'cyan', delay: 3100 },
+      { text: '[i] Estande: FECART de Cibersegurança no 5º Andar', type: 'info', delay: 3900 },
+      { text: '[+] Venha conversar conosco para aprender mais sobre segurança!', type: 'cyan', delay: 4700 }
     ];
 
-    fakeLogs.forEach((item) => {
+    demoLogs.forEach((item) => {
       setTimeout(() => {
         if (!isPrankRevealed && isHackedActive) {
           addLog(item.text, item.type);
@@ -402,58 +378,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================================
-  // 5. BARRA DE PROGRESSO FICTÍCIA
+  // 5. BOTÃO DE DICAS DE SEGURANÇA
   // ============================================================
-  function startProgress() {
-    if (progressInterval) clearInterval(progressInterval);
-    if (!progressBar) return;
-    progressInterval = setInterval(() => {
-      if (isPrankRevealed || !isHackedActive) {
-        clearInterval(progressInterval);
-        return;
-      }
-      if (progress < 98) {
-        progress += Math.floor(Math.random() * 6) + 3;
-        if (progress > 98) progress = 98;
-        if (progressBar) progressBar.style.width = `${progress}%`;
-        if (progressPercent) progressPercent.textContent = `${progress}%`;
-
-        if (progressStatus) {
-          if (progress > 30 && progress < 60) {
-            progressStatus.textContent = 'Enviando contatos e histórico do WhatsApp...';
-          } else if (progress >= 60 && progress < 85) {
-            progressStatus.textContent = 'Copiando galeria de fotos e documentos...';
-          } else if (progress >= 85) {
-            progressStatus.textContent = 'Criptografando chave mestra do dispositivo...';
-          }
-        }
-      }
-    }, 450);
+  if (panicBtn) {
+    panicBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      initAudio();
+      playTone(600, 0.1, 'sine', 0.12);
+      showReveal();
+    });
   }
 
   // ============================================================
-  // 6. BOTÃO DE AÇÃO ("TENTAR INTERROMPER")
-  // ============================================================
-  panicBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    initAudio();
-    playSiren();
-
-    // Efeito de erro crítico ao tentar cancelar
-    panicBtn.disabled = true;
-    panicBtn.style.background = '#880015';
-    panicBtn.innerHTML = '🚨 ERRO: FALHA AO INTERROMPER! BLOQUEIO ATIVO 🚨';
-    document.body.style.filter = 'invert(1)';
-    setTimeout(() => {
-      document.body.style.filter = 'none';
-    }, 150);
-
-    addLog('[CRITICAL] Tentativa de interrupção manual detectada pelo firewall!', 'danger');
-    addLog('[CRITICAL] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', 'danger');
-  });
-
-  // ============================================================
-  // 7. REVELAÇÃO DA BRINCADEIRA & CONSCIENTIZAÇÃO FECART
+  // 6. MODAL EDUCATIVO & CONSCIENTIZAÇÃO FECART
   // ============================================================
   function showReveal() {
     if (isPrankRevealed) return;
@@ -469,24 +406,25 @@ document.addEventListener('DOMContentLoaded', () => {
     revealModal.classList.remove('hidden');
   }
 
-  // Reiniciar a brincadeira e retornar à tela de Wi-Fi
+  // Reiniciar a demonstração e retornar à tela de Wi-Fi
   restartBtn.addEventListener('click', () => {
     isPrankRevealed = false;
     isHackedActive = false;
     if (autoRevealTimer) clearTimeout(autoRevealTimer);
     if (progressInterval) clearInterval(progressInterval);
 
-    // Reseta tela hacker
+    // Reseta tela de demonstração
     if (terminalBody) terminalBody.innerHTML = '';
     progress = 0;
     if (progressBar) progressBar.style.width = '0%';
     if (progressPercent) progressPercent.textContent = '0%';
-    if (progressStatus) progressStatus.textContent = 'Extraindo fotos e conversas...';
-    panicBtn.disabled = false;
-    panicBtn.style.background = '';
-    panicBtn.innerHTML = '<span class="btn-icon">⚡</span> TENTAR INTERROMPER INVASÃO <span class="btn-icon">⚡</span>';
+    if (panicBtn) {
+      panicBtn.disabled = false;
+      panicBtn.style.background = '';
+      panicBtn.innerHTML = '<span class="btn-icon">🛡️</span> VER DICAS DE SEGURANÇA <span class="btn-icon">🛡️</span>';
+    }
 
-    // Oculta modal e tela hacker, volta para o Wi-Fi
+    // Oculta modal e tela de demonstração, volta para o Wi-Fi
     revealModal.classList.add('hidden');
     hackerScreen.classList.add('hidden');
     wifiScreen.classList.remove('hidden');
