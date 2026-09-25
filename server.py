@@ -90,9 +90,13 @@ def run_server(port=PORT):
             print(f"📱 Link para o Celular (mesmo Wi-Fi): {target_url}")
             print(f"💻 Link no seu Computador:            {local_url}")
             print(f"⚙️  Gerador de QR Code personalizado:  {generator_url}")
-            print(f"🖼️  Arquivo de imagem gerado:         qrcode.png")
-            print("=" * 50)
             print("\nPressione Ctrl + C para encerrar o servidor.\n")
+            
+            # Abre o navegador automaticamente com a tela do QR Code
+            import threading
+            import webbrowser
+            threading.Timer(1.2, lambda: webbrowser.open(generator_url)).start()
+
             httpd.serve_forever()
     except OSError as e:
         if "Address already in use" in str(e) or e.errno == 10048:
