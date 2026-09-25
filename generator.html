@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerador de QR Code - Demonstração FECART Cibersegurança</title>
+  <title>Gerador de QR Code - "Você foi hackeado!"</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -269,7 +269,7 @@
       <div class="btn-group">
         <button id="btn-download" class="btn btn-primary">📥 Baixar Imagem (PNG)</button>
         <button id="btn-copy" class="btn btn-secondary">📋 Copiar Link</button>
-        <a id="btn-test" href="index.html" target="_blank" class="btn btn-secondary">👁️ Testar Página Inicial</a>
+        <a id="btn-test" href="index.html" target="_blank" class="btn btn-danger">👁️ Abrir Tela Hacker</a>
       </div>
     </div>
 
@@ -360,7 +360,7 @@
       if (downloadUrl) {
         const a = document.createElement('a');
         a.href = downloadUrl;
-        a.download = 'qrcode-fecart-wifi.png';
+        a.download = 'qrcode-voce-foi-hackeado.png';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

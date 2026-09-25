@@ -85,7 +85,7 @@ def run_server(port=PORT):
     try:
         with socketserver.TCPServer(("", port), handler) as httpd:
             print("\n" + "=" * 50)
-            print("🚀 SERVIDOR ATIVO E PRONTO PARA A DEMONSTRAÇÃO!")
+            print("🚀 SERVIDOR ATIVO E PRONTO PARA A PEGADINHA!")
             print("=" * 50)
             print(f"📱 Link para o Celular (mesmo Wi-Fi): {target_url}")
             print(f"💻 Link no seu Computador:            {local_url}")

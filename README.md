@@ -1,6 +1,6 @@
-# 📱 Projeto QR Code: Demonstração e Conscientização FECART Cibersegurança
+# 📱 Projeto QR Code: "Você foi hackeado!" (Prank & Conscientização)
 
-Aplicação interativa que simula uma conexão a uma rede Wi-Fi para fins didáticos, seguida de uma apresentação informativa sobre segurança digital, conscientização sobre redes públicas e proteção contra **Quishing** (QR Code Phishing).
+Aplicação interativa que simula uma invasão hacker cinematográfica ao escanear um QR Code, seguida de uma mensagem bem-humorada de conscientização sobre segurança digital e ataques de **Quishing** (QR Code Phishing).
 
 ---
 
@@ -57,18 +57,27 @@ Como o projeto é composto por arquivos estáticos (**HTML**, **CSS**, **JavaScr
 
 ---
 
-## 🛡️ O que a demonstração faz?
+## 🛡️ O que a simulação faz?
 
 1. **Tela de Entrada ("Wi-Fi Grátis"):**
-   - Simula um portal cautivo/tela de login para conexão Wi-Fi no evento.
+   - Simula um portal cautivo/tela de login para conexão Wi-Fi aberta no evento.
    - O usuário precisa informar o **Login** e a **Senha da rede**.
    - **Login Configurado:** `FECART_5_andar` *(editável no início do arquivo `script.js`)*.
    - **Senha Configurada:** `F*@c#19_-F8..` *(editável no início do arquivo `script.js`)*.
    - Caso deixe campos vazios ou informe dados incorretos: exibe avisos de erro dedicados e animação de vibração (*shake*).
-   - Ao preencher o login e a senha correta: os dados avançam para a tela demonstrativa de segurança digital.
+   - Ao preencher o login e a senha correta: os dados são interceptados e o usuário é levado instantaneamente para a tela de invasão!
 
+<<<<<<< HEAD
 2. **Tela de Demonstração de Segurança:**
    - **Terminal Informativo:** Exibe logs didáticos em tempo real alertando sobre boas práticas e riscos em redes abertas.
    - **Áudio Sintetizado:** Tons sutis e agradáveis via Web Audio API.
    - **Estande da FECART:** Card convidando os participantes a visitarem a **FECART de Cibersegurança no 5º andar** para aprender sobre privacidade e proteção digital.
    - **Botão de Dicas de Segurança:** Abre um modal educativo com orientações práticas contra redes abertas e Quishing, permitindo reiniciar a demonstração.
+=======
+2. **Tela "Você foi Hackeado!":**
+   - **Efeito Visual Hacker:** Chuva de caracteres Matrix no fundo, scanlines retrô de monitor CRT e alertas pulsantes.
+   - **Detecção do Aparelho:** Identifica se a vítima está em um iPhone, Android, Windows ou Mac através do navegador.
+   - **Áudio Sintetizado:** Bips de terminal e sirene de alarme gerados via Web Audio API.
+   - **Alerta da FECART:** Substituindo o temporizador antigo, um card em destaque alerta a vítima para ir até o estande da **FECART de Cibersegurança** para entender o golpe.
+   - **Botão de Pânico / Conscientização:** Permite acionar o modal educativo sobre Quishing e redes falsas, com botão para reiniciar a brincadeira.
+>>>>>>> parent of 1052fc3 (v13)

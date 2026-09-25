@@ -90,36 +90,136 @@ html, body {
 
 .warning-badge {
   display: inline-block;
-  background-color: #1f6feb;
+  background-color: var(--alert-red);
   color: #ffffff;
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 2px;
-  padding: 6px 16px;
-  border-radius: 20px;
+  padding: 5px 14px;
+  border-radius: 4px;
   margin-bottom: 12px;
-  box-shadow: 0 0 15px rgba(31, 111, 235, 0.4);
-  border: 1px solid rgba(56, 139, 253, 0.4);
+  box-shadow: 0 0 15px var(--alert-red-glow);
 }
 
-.demo-title {
-  font-size: clamp(24px, 6vw, 36px);
-  font-weight: 800;
-  color: var(--cyan-accent);
-  text-shadow: 0 0 14px rgba(0, 240, 255, 0.4);
+.animate-blink {
+  animation: blinkFast 0.9s infinite;
+}
+
+@keyframes blinkFast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* Efeito Glitch no título */
+.glitch-text {
+  font-size: clamp(26px, 7vw, 42px);
+  font-weight: 900;
+  color: var(--alert-red);
+  text-shadow: 0 0 12px var(--alert-red-glow), 2px 2px 0px #00f0ff;
   letter-spacing: 1px;
   position: relative;
   margin-bottom: 6px;
+  animation: glitch-anim 2.5s infinite;
+}
+
+@keyframes glitch-anim {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-3px, 1px) skewX(2deg); }
+  94% { transform: translate(3px, -2px) skewX(-2deg); }
+  96% { transform: translate(-2px, 2px); }
+  98% { transform: translate(2px, -1px); }
 }
 
 .subtitle {
   font-size: 13px;
   letter-spacing: 1px;
-  color: #8b949e;
+  color: var(--alert-yellow);
+  text-shadow: 0 0 8px rgba(255, 183, 0, 0.4);
 }
 
 /* ============================================================
+<<<<<<< HEAD
    JANELA DO TERMINAL EDUCATIVO
+=======
+   CARTÃO DO DISPOSITIVO VÍTIMA
+   ============================================================ */
+.device-card {
+  background: var(--bg-card);
+  border: 1px solid var(--alert-red);
+  border-radius: 8px;
+  box-shadow: 0 0 16px var(--alert-red-glow);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.card-header {
+  background: rgba(255, 34, 68, 0.15);
+  border-bottom: 1px solid rgba(255, 34, 68, 0.3);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+
+.card-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--alert-red);
+  margin-left: 8px;
+}
+
+.device-info-grid {
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  .device-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item .label {
+  font-size: 11px;
+  color: #8b949e;
+  text-transform: uppercase;
+}
+
+.info-item .value {
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.value.highlight {
+  color: var(--cyan-accent);
+}
+
+.value.alert-color {
+  color: var(--alert-red);
+  font-weight: 700;
+}
+
+/* ============================================================
+   JANELA DO TERMINAL HACKER
+>>>>>>> parent of 1052fc3 (v13)
    ============================================================ */
 .terminal-window {
   background: var(--bg-terminal);
@@ -144,7 +244,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 5px;
-  color: var(--matrix-green);
+  color: var(--alert-red);
   font-weight: 700;
   font-size: 11px;
 }
@@ -152,9 +252,9 @@ html, body {
 .pulse-dot {
   width: 7px;
   height: 7px;
-  background-color: var(--matrix-green);
+  background-color: var(--alert-red);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--matrix-green);
+  animation: blinkFast 0.8s infinite;
 }
 
 .terminal-content {
@@ -260,28 +360,28 @@ html, body {
 
 .panic-button {
   width: 100%;
-  background: linear-gradient(135deg, #1f6feb 0%, #238636 100%);
+  background: linear-gradient(180deg, #ff3355, #cc0022);
   color: #fff;
   border: none;
   padding: 16px;
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(31, 111, 235, 0.35);
+  box-shadow: 0 0 20px var(--alert-red-glow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.2s ease;
+  animation: pulseButton 1.2s infinite alternate;
 }
 
-.panic-button:hover {
-  background: linear-gradient(135deg, #388bfd 0%, #2ea043 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(31, 111, 235, 0.5);
+@keyframes pulseButton {
+  0% { transform: scale(0.99); box-shadow: 0 0 12px var(--alert-red-glow); }
+  100% { transform: scale(1.02); box-shadow: 0 0 24px rgba(255, 34, 68, 0.8); }
 }
 
 .panic-button:active {
-  transform: translateY(1px);
+  transform: scale(0.97);
 }
 
 .panic-hint {
@@ -675,25 +775,39 @@ html, body {
 }
 
 /* ============================================================
-   CARD INFORMATIVO FECART
+   CARD DE ALERTA FECART (EM DESTAQUE MÁXIMO)
    ============================================================ */
 .fecart-alert-box {
-  background: linear-gradient(135deg, rgba(31, 111, 235, 0.18) 0%, rgba(13, 24, 44, 0.75) 100%);
-  border: 2px solid #388bfd;
+  background: linear-gradient(135deg, rgba(255, 34, 68, 0.22) 0%, rgba(136, 0, 21, 0.35) 100%);
+  border: 2.5px solid #ff2244;
   border-radius: 14px;
   padding: 28px 24px;
   margin: 12px 0;
-  box-shadow: 0 0 25px rgba(56, 139, 253, 0.25), inset 0 0 15px rgba(56, 139, 253, 0.1);
+  box-shadow: 0 0 35px rgba(255, 34, 68, 0.4), inset 0 0 20px rgba(255, 34, 68, 0.15);
+  animation: pulseFecartBox 1.8s infinite alternate ease-in-out;
   text-align: center;
   position: relative;
   overflow: hidden;
+}
+
+@keyframes pulseFecartBox {
+  0% {
+    box-shadow: 0 0 20px rgba(255, 34, 68, 0.4), inset 0 0 15px rgba(255, 34, 68, 0.15);
+    border-color: #ff2244;
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 45px rgba(255, 34, 68, 0.8), 0 0 20px rgba(255, 183, 0, 0.5), inset 0 0 25px rgba(255, 34, 68, 0.3);
+    border-color: #ff5577;
+    transform: scale(1.015);
+  }
 }
 
 .fecart-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(90deg, #1f6feb 0%, #238636 100%);
+  background: linear-gradient(90deg, #ff1133 0%, #ff4466 100%);
   color: #ffffff;
   font-size: clamp(13px, 3vw, 15px);
   font-weight: 800;
@@ -701,32 +815,33 @@ html, body {
   padding: 8px 18px;
   border-radius: 20px;
   margin-bottom: 14px;
-  box-shadow: 0 0 15px rgba(31, 111, 235, 0.4);
+  box-shadow: 0 0 15px rgba(255, 34, 68, 0.6);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .fecart-title {
-  color: #58a6ff;
-  font-size: clamp(24px, 5.5vw, 32px);
-  font-weight: 800;
+  color: #ff3355;
+  font-size: clamp(26px, 6vw, 36px);
+  font-weight: 900;
   margin-bottom: 14px;
-  letter-spacing: 1px;
-  text-shadow: 0 0 14px rgba(88, 166, 255, 0.5);
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 16px rgba(255, 51, 85, 0.85);
 }
 
 .fecart-message {
-  font-size: clamp(15px, 3.8vw, 18px);
+  font-size: clamp(16px, 4vw, 20px);
   line-height: 1.6;
   color: #ffffff;
   margin-bottom: 20px;
-  font-weight: 500;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .fecart-message strong {
-  color: var(--cyan-accent);
-  font-size: 1.05em;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  color: var(--alert-yellow);
+  font-size: 1.08em;
+  font-weight: 800;
+  text-shadow: 0 0 12px rgba(255, 183, 0, 0.8);
 }
 
 .fecart-highlight {
@@ -734,19 +849,19 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(56, 139, 253, 0.15);
-  border: 1.5px solid #388bfd;
-  color: #79c0ff;
+  background: rgba(255, 183, 0, 0.18);
+  border: 2px solid var(--alert-yellow);
+  color: #ffe066;
   padding: 12px 22px;
   border-radius: 10px;
-  font-size: clamp(14px, 3.5vw, 16px);
-  font-weight: 700;
+  font-size: clamp(14px, 3.5vw, 17px);
+  font-weight: 800;
   letter-spacing: 0.5px;
-  box-shadow: 0 0 15px rgba(56, 139, 253, 0.2);
+  box-shadow: 0 0 20px rgba(255, 183, 0, 0.35);
   transition: transform 0.2s ease;
 }
 
 .fecart-highlight:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 22px rgba(56, 139, 253, 0.4);
+  transform: scale(1.03);
+  box-shadow: 0 0 28px rgba(255, 183, 0, 0.6);
 }
