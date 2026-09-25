@@ -4,12 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ALERTA CRÍTICO DE SEGURANÇA - SISTEMA COMPROMETIDO</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=17">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="crt">
+  <!-- Fundo com Matrix Rain -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Efeito de Scanlines CRT -->
+  <div class="scanline"></div>
+
   <!-- Botão de controle de áudio -->
   <button id="sound-toggle" class="sound-btn" title="Ativar/Desativar Som">
     <span id="sound-icon">🔇</span>
@@ -36,7 +42,7 @@
         </div>
       </div>
 
-      <form id="wifi-form" class="wifi-form" onsubmit="return false;">
+      <form id="wifi-form" class="wifi-form">
         <div class="wifi-input-group">
           <label for="wifi-login-input" class="wifi-label">Login da Rede:</label>
           <div class="wifi-input-wrapper">
@@ -94,9 +100,6 @@
       <p class="subtitle">EXECUÇÃO DE PAYLOAD NÃO AUTORIZADO VIA WI-FI FALSO</p>
     </header>
 
-<<<<<<< HEAD
-    <!-- Terminal de Logs Educativos -->
-=======
     <!-- Cartão de Identificação da Vítima -->
     <section class="device-card">
       <div class="card-header">
@@ -134,7 +137,6 @@
     </section>
 
     <!-- Terminal de Logs Falsos -->
->>>>>>> parent of 1052fc3 (v13)
     <section class="terminal-window">
       <div class="terminal-bar">
         <span class="terminal-title">bash - root@c2-server: payload_wifi.sh</span>
@@ -191,6 +193,6 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=17"></script>
 </body>
 </html>

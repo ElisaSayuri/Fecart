@@ -21,23 +21,49 @@
   box-sizing: border-box;
 }
 
-/* ============================================================
-   FUNDO MODERNO: DEGRADÊ SUAVE COM MICROPONTOS TECNOLÓGICOS
-   ============================================================ */
 html, body {
   width: 100%;
   min-height: 100vh;
-  background-color: #0b0f19;
-  background-image: 
-    radial-gradient(circle at 50% 15%, rgba(56, 139, 253, 0.12) 0%, transparent 65%),
-    radial-gradient(circle at 85% 85%, rgba(0, 240, 255, 0.05) 0%, transparent 45%),
-    radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
-  background-size: 100% 100%, 100% 100%, 24px 24px;
-  background-position: 0 0, 0 0, 0 0;
+  background-color: var(--bg-dark);
   color: var(--text-primary);
   font-family: var(--font-mono);
   overflow-x: hidden;
   position: relative;
+}
+
+/* ============================================================
+   CANVAS MATRIX & EFEITOS CRT
+   ============================================================ */
+#matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+/* Linhas de varredura CRT */
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 4px, 6px 100%;
 }
 
 /* ============================================================
@@ -138,9 +164,6 @@ html, body {
 }
 
 /* ============================================================
-<<<<<<< HEAD
-   JANELA DO TERMINAL EDUCATIVO
-=======
    CARTÃO DO DISPOSITIVO VÍTIMA
    ============================================================ */
 .device-card {
@@ -219,7 +242,6 @@ html, body {
 
 /* ============================================================
    JANELA DO TERMINAL HACKER
->>>>>>> parent of 1052fc3 (v13)
    ============================================================ */
 .terminal-window {
   background: var(--bg-terminal);
@@ -554,12 +576,7 @@ html, body {
   width: 100vw;
   height: 100vh;
   z-index: 30;
-  background-color: #0b0f19;
-  background-image: 
-    radial-gradient(circle at 50% 20%, rgba(56, 139, 253, 0.15) 0%, transparent 65%),
-    radial-gradient(circle at 85% 85%, rgba(0, 240, 255, 0.05) 0%, transparent 45%),
-    radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
-  background-size: 100% 100%, 100% 100%, 24px 24px;
+  background: radial-gradient(circle at 50% 20%, #151d2f 0%, #080c14 100%);
   display: flex;
   align-items: center;
   justify-content: center;

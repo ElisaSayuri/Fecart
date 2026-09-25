@@ -15,7 +15,15 @@ const ACCEPTED_LOGINS = [
 
 const ACCEPTED_PASSWORDS = [
   'F*@c#19_-F8..',
-  'f*@c#19_-f8..' // Suporte para facilitar no teclado do celular
+  'f*@c#19_-f8..',
+  'F*@c#19_-F8.',
+  'f*@c#19_-f8.',
+  'F*@c#19_-F8',
+  'f*@c#19_-f8',
+  'F*@c#19-F8..',
+  'f*@c#19-f8..',
+  'F*@c#19-F8',
+  'f*@c#19-f8'
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -30,8 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const wifiError = document.getElementById('wifi-error');
   const wifiSubmitBtn = document.getElementById('wifi-submit-btn');
 
-  // Elementos do DOM - Tela de Demonstração
+  // Elementos do DOM - Tela Hacker
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
   const terminalBody = document.getElementById('terminal-body');
+  const devModel = document.getElementById('dev-model');
+  const devOs = document.getElementById('dev-os');
+  const devLogin = document.getElementById('dev-login');
+  const devIp = document.getElementById('dev-ip');
+  const devLoc = document.getElementById('dev-loc');
   const progressBar = document.getElementById('progress-bar');
   const progressPercent = document.getElementById('progress-percent');
   const progressStatus = document.getElementById('progress-status');
@@ -165,8 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Submissão do formulário de Wi-Fi
-  wifiForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  function handleWifiSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
     const enteredLogin = wifiLoginInput ? wifiLoginInput.value.trim() : '';
     const enteredPassword = wifiPasswordInput.value.trim().toLowerCase();
 
@@ -228,7 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (wifiLoginError) wifiLoginError.classList.add('hidden');
     if (wifiLoginInput) wifiLoginInput.classList.remove('error');
     triggerHackedScreen(enteredLogin);
-  });
+  }
+
+  wifiForm.addEventListener('submit', handleWifiSubmit);
+  if (wifiSubmitBtn) {
+    wifiSubmitBtn.addEventListener('click', handleWifiSubmit);
+  }
 
   // Transição para a tela "Você foi Hackeado"
   function triggerHackedScreen(capturedLogin = '') {
@@ -252,17 +272,110 @@ document.addEventListener('DOMContentLoaded', () => {
     hackerScreen.classList.remove('hidden');
     isHackedActive = true;
 
-<<<<<<< HEAD
-    // Dispara a apresentação dos logs educativos
-=======
     // Dispara a simulação hacker
     detectDeviceInfo(capturedLogin);
->>>>>>> parent of 1052fc3 (v13)
     startLogs(capturedLogin);
+    startProgress();
   }
 
   // ============================================================
-  // 3. TERMINAL E LOGS EDUCATIVOS
+  // 3. CHUVA DE CÓDIGO MATRIX (Canvas)
+  // ============================================================
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const characters = '0123456789ABCDEF$#@%&*+-/<>{}[]=XYZﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ';
+  const fontSize = 14;
+  let columns = Math.floor(window.innerWidth / fontSize);
+  let drops = Array(columns).fill(1);
+
+  function drawMatrix() {
+    ctx.fillStyle = 'rgba(7, 9, 14, 0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#00ff66';
+    ctx.font = `${fontSize}px monospace`;
+
+    for (let i = 0; i < drops.length; i++) {
+      const char = characters.charAt(Math.floor(Math.random() * characters.length));
+      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+    requestAnimationFrame(drawMatrix);
+  }
+  requestAnimationFrame(drawMatrix);
+
+  // ============================================================
+  // 3. DETECÇÃO REAL DE DISPOSITIVO E IP
+  // ============================================================
+  function detectDeviceInfo(capturedLogin = '') {
+    if (devLogin) {
+      devLogin.textContent = capturedLogin || 'Visitante Desconhecido';
+    }
+
+    const ua = navigator.userAgent;
+    let model = "Dispositivo Móvel Desconhecido";
+    let os = "Sistema Operacional Desconhecido";
+
+    // Detecção de SO e Modelo
+    if (/iPhone/i.test(ua)) {
+      model = "Apple iPhone (" + (window.screen.width + "x" + window.screen.height) + ")";
+      os = "Apple iOS";
+    } else if (/iPad/i.test(ua)) {
+      model = "Apple iPad";
+      os = "iPadOS";
+    } else if (/Android/i.test(ua)) {
+      if (/Samsung/i.test(ua) || /SM-/i.test(ua)) model = "Samsung Galaxy";
+      else if (/Xiaomi/i.test(ua) || /Redmi/i.test(ua)) model = "Xiaomi / Redmi";
+      else if (/Motorola/i.test(ua) || /Moto/i.test(ua)) model = "Motorola Moto";
+      else model = "Aparelho Android";
+      os = "Google Android";
+    } else if (/Windows NT/i.test(ua)) {
+      model = "Computador / Notebook";
+      os = "Microsoft Windows";
+    } else if (/Macintosh|Mac OS X/i.test(ua)) {
+      model = "Apple Mac";
+      os = "macOS";
+    } else if (/Linux/i.test(ua)) {
+      model = "Estação de Trabalho";
+      os = "GNU/Linux";
+    }
+
+    devModel.textContent = model;
+    devOs.textContent = os;
+
+    // Busca IP e Cidade aproximada
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        devIp.textContent = data.ip || '189.34.218.42';
+        fetch(`https://ipapi.co/${data.ip}/json/`)
+          .then(res => res.json())
+          .then(locData => {
+            const city = locData.city || 'São Paulo';
+            const region = locData.region_code || 'BR';
+            devLoc.textContent = `${city}, ${region}`;
+          })
+          .catch(() => {
+            devLoc.textContent = 'Brasil (Geolocalização Ativa)';
+          });
+      })
+      .catch(() => {
+        devIp.textContent = '189.34.218.42';
+        devLoc.textContent = 'São Paulo, Brasil';
+      });
+  }
+
+  // ============================================================
+  // 4. TERMINAL E LOGS FALSOS
   // ============================================================
   function addLog(text, type = 'info') {
     if (!terminalBody) return;
@@ -279,16 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `[!] CREDENCIAIS CAPTURADAS: Login "${capturedLogin}" | Senha interceptada!`
       : `[!] CREDENCIAIS CAPTURADAS: Senha WPA interceptada com sucesso!`;
 
-<<<<<<< HEAD
-    const demoLogs = [
-      { text: '[+] Conexão demonstrativa estabelecida no portal Wi-Fi', type: 'info', delay: 300 },
-      { text: credText, type: 'cyan', delay: 800 },
-      { text: '[i] Demonstração educativa de segurança em andamento', type: 'info', delay: 1500 },
-      { text: '[!] Em redes abertas sem criptografia, informações podem ficar visíveis', type: 'warn', delay: 2300 },
-      { text: '[+] Proteja seus dados: desconfie de portais abertos desconhecidos', type: 'cyan', delay: 3100 },
-      { text: '[i] Estande: FECART de Cibersegurança no 5º Andar', type: 'info', delay: 3900 },
-      { text: '[+] Venha conversar conosco para aprender mais sobre segurança!', type: 'cyan', delay: 4700 }
-=======
     const fakeLogs = [
       { text: '[+] Conexão Wi-Fi interceptada via Ponto de Acesso falso', type: 'info', delay: 300 },
       { text: credText, type: 'danger', delay: 800 },
@@ -301,7 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
       { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 6100 },
       { text: '[!] INSTRUÇÃO FINAL: Vá até a FECART de Cibersegurança no 5º andar!', type: 'danger', delay: 6900 },
       { text: '[!] VÁ ATÉ A FECART DE CIBERSEGURANÇA NO 5º ANDAR PARA ENTENDER O QUE ACONTECEU!', type: 'danger', delay: 7700 }
->>>>>>> parent of 1052fc3 (v13)
     ];
 
     fakeLogs.forEach((item) => {
@@ -314,11 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================================
-<<<<<<< HEAD
-  // 4. BOTÃO DE DICAS DE SEGURANÇA
-=======
   // 5. BARRA DE PROGRESSO FICTÍCIA
->>>>>>> parent of 1052fc3 (v13)
   // ============================================================
   function startProgress() {
     if (progressInterval) clearInterval(progressInterval);
